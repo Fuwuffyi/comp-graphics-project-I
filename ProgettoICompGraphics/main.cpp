@@ -40,7 +40,7 @@ int main() {
     }
     // Test to draw some stuff
     const std::vector<Vertex> vertices = {
-        Vertex { glm::vec2(0.5f, 0.5f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) },
+        Vertex { glm::vec2(0.5f, 0.5f), glm::vec4(1.0f, 0.0f, 0.0f, 0.3f) },
         Vertex { glm::vec2(0.0f, 0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) },
         Vertex { glm::vec2(0.5f, 0.0f), glm::vec4(0.5f, 1.0f, 0.5f, 1.0f) },
         Vertex { glm::vec2(0.0f, 0.5f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) }
@@ -53,9 +53,12 @@ int main() {
     const Mesh square(vertices, indices);
     // Create shader
     const Shader shader("fragmentSource.glsl", "vertexSource.glsl");
+    // Enable blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // Draw/Game loop
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(1.0, 1.0, 1.0, 1.0);
+        glClearColor(0.3, 0.2, 0.3, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.activate();
