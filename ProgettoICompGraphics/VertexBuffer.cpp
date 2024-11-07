@@ -7,5 +7,6 @@ VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices, const bool dynam
 :
 	SimpleBuffer(GL_ARRAY_BUFFER, dynamic)
 {
-	glBufferData(this->type, static_cast<int64_t>(vertices.size() * sizeof(uint32_t)), vertices.data(), dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+	this->bind();
+	glBufferData(this->type, static_cast<int64_t>(vertices.size() * sizeof(Vertex)), vertices.data(), dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 }

@@ -7,7 +7,6 @@
 #include <fstream>
 #include <memory>
 
-
 std::string Shader::readShaderSource(const std::string& shaderFile) {
 	std::ifstream file(shaderFile, std::ios::binary);
 	if (!file) {

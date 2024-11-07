@@ -57,4 +57,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="vertexSource.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="fragmentSource.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

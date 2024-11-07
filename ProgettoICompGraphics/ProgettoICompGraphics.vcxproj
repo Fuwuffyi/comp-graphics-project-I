@@ -146,6 +146,10 @@
     <ClInclude Include="VertexArray.hpp" />
     <ClInclude Include="VertexBuffer.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="fragmentSource.glsl" />
+    <None Include="vertexSource.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
