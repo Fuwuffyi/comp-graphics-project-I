@@ -44,17 +44,24 @@ int main() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// Draw/Game loop
+	double prevTime = glfwGetTime();
 	while (!window.shouldClose()) {
+		// Deltatime calculation
+		const double currTime = glfwGetTime();
+		const float deltaTime = static_cast<float>(currTime - prevTime);
+		prevTime = currTime;
+		// Clear color buffer
 		glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
+		// Update camera
+		cam.setPosition(cam.getPosition() + glm::vec2(0.1f, 0.0f) * deltaTime);
 		cam.updateCameraMatrix();
-
+		// Activate shader (and pass camera to shader)
 		shader.activate();
-		glUniformMatrix4fv(shader.getUniformLocation("camMatrix"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
-
+		glUniformMatrix4fv(shader.getUniformLocation("camMatrix"), 1, GL_FALSE, glm::value_ptr(cam.getCameraMatrix()));
+		// Draw mesh
 		square.draw(GL_TRIANGLES);
-
+		// Swap buffers and poll events
 		window.swapBuffers();
 		glfwPollEvents();
 	}

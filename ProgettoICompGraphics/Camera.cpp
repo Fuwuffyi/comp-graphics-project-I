@@ -17,6 +17,7 @@ Camera::Camera(const glm::vec2& _position)
 void Camera::updateViewMatrix() {
 	this->viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-this->position, 0.0f));
 }
+
 void Camera::updateCameraMatrix() {
 	this->cameraMatrix = this->projectionMatrix * this->viewMatrix;
 }
