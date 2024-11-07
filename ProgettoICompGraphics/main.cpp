@@ -5,9 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Shader.hpp"
-#include "VertexArray.hpp"
-#include "VertexBuffer.hpp"
-#include "ElementBuffer.hpp"
+#include "Mesh.hpp"
 
 int main() {
     // Initialize glfw
@@ -49,20 +47,10 @@ int main() {
     };
     const std::vector<uint32_t> indices = {
         0, 1, 2,
-        2, 1, 3
+        0, 1, 3
     };
     // Testing mesh
-    const VertexArray vao = VertexArray();
-    const VertexBuffer vbo(vertices);
-    const ElementBuffer ebo(indices);
-    vao.bind();
-    vbo.bind();
-    ebo.bind();
-    vao.linkAttrib(0, 2, GL_FLOAT, 0);
-    vao.linkAttrib(1, 4, GL_FLOAT, 2 * sizeof(float));
-    vao.unbind();
-    vbo.unbind();
-    ebo.unbind();
+    const Mesh square(vertices, indices);
     // Create shader
     const Shader shader("fragmentSource.glsl", "vertexSource.glsl");
     // Draw/Game loop
@@ -71,9 +59,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.activate();
-
-        vao.bind();
-        glDrawElements(GL_TRIANGLES, static_cast<int32_t>(indices.size()), GL_UNSIGNED_INT, 0);
+        square.draw(GL_TRIANGLES);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
