@@ -58,7 +58,7 @@ int main() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // Draw/Game loop
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.3, 0.2, 0.3, 1.0);
+        glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.activate();

@@ -8,7 +8,8 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& ind
 	indices(indices),
 	vao(),
 	vbo(this->vertices),
-	ebo(this->indices)
+	ebo(this->indices),
+	aabb(this->vertices)
 {
 	this->vao.bind();
 	this->vbo.bind();
