@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoundingBox.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ElementBuffer.cpp" />
     <ClCompile Include="ElementBuffer.hpp" />
     <ClCompile Include="glad.c" />
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingBox.hpp" />
+    <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Mesh.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="SimpleBuffer.hpp" />

@@ -1,6 +1,7 @@
-#include <vector>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Window.hpp"
+#include "Camera.hpp"
 #include "Shader.hpp"
 #include "Mesh.hpp"
 
@@ -22,6 +23,8 @@ int main() {
 	// Create the window
 	Window window("Test window", 800, 800);
 	window.setWindowActive();
+	// Create a test camera
+	Camera cam(glm::vec2(0.0f));
 	// Test to draw some stuff
 	const std::vector<Vertex> vertices = {
 		Vertex { glm::vec2(0.5f, 0.5f), glm::vec4(1.0f, 0.0f, 0.0f, 0.3f) },
@@ -45,7 +48,11 @@ int main() {
 		glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		cam.updateCameraMatrix();
+
 		shader.activate();
+		glUniformMatrix4fv(shader.getUniformLocation("camMatrix"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
+
 		square.draw(GL_TRIANGLES);
 
 		window.swapBuffers();
