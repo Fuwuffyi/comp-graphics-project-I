@@ -21,6 +21,8 @@ Window::Window(const std::string& _title, const uint32_t _width, const uint32_t 
 		glfwTerminate();
 		exit(-1);
 	}
+	// Set resizable
+	glfwSetWindowAttrib(this->glWindow, GLFW_RESIZABLE, resizable ? GL_TRUE : GL_FALSE);
 	// Set the window's owner to this object 
 	glfwSetWindowUserPointer(this->glWindow, this);
 	// Set window resize callback
@@ -44,8 +46,9 @@ std::string Window::getTitle() const {
 	return this->title;
 }
 
-void Window::setTitle(const std::string& title) {
-	// TODO:
+void Window::setTitle(const std::string& _title) {
+	this->title = _title;
+	glfwSetWindowTitle(this->glWindow, _title.c_str());
 }
 
 void Window::setWindowActive() const {

@@ -21,12 +21,12 @@ public:
 	uint32_t getWidth() const;
 	uint32_t getHeight() const;
 	std::string  getTitle() const;
-	void setTitle(const std::string& title);
+	void setTitle(const std::string& _title);
 
 	void setWindowActive() const;
 	bool shouldClose() const;
 	void swapBuffers() const;
 private:
-	void setWidth(const uint32_t width);
-	void setHeight(const uint32_t height);
+	void setWidth(const uint32_t _width);
+	void setHeight(const uint32_t _height);
 };
