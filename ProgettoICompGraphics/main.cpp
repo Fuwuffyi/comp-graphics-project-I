@@ -23,13 +23,13 @@ int main() {
 	Window window("Test window", 800, 800);
 	window.setWindowActive();
 	// Create a test camera
-	Camera cam(glm::vec2(0.0f));
+	Camera cam(glm::vec2(-0.5f, -0.5f));
 	// Test to draw some stuff
 	const std::vector<Vertex> vertices = {
-		Vertex { glm::vec2(0.5f, 0.5f), glm::vec4(1.0f, 0.0f, 0.0f, 0.3f) },
-		Vertex { glm::vec2(0.0f, 0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) },
-		Vertex { glm::vec2(0.5f, 0.0f), glm::vec4(0.5f, 1.0f, 0.5f, 1.0f) },
-		Vertex { glm::vec2(0.0f, 0.5f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) }
+		Vertex { glm::vec2(0.25f, 0.25f), glm::vec4(1.0f, 0.0f, 0.0f, 0.3f) },
+		Vertex { glm::vec2(-0.25f, -0.25f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) },
+		Vertex { glm::vec2(0.25f, -0.25f), glm::vec4(0.5f, 1.0f, 0.5f, 1.0f) },
+		Vertex { glm::vec2(-0.25f, 0.25f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) }
 	};
 	const std::vector<uint32_t> indices = {
 		0, 1, 2,
@@ -40,7 +40,7 @@ int main() {
 	// Create shader
 	const std::shared_ptr<Shader> shader = std::make_shared<Shader>("fragmentSource.glsl", "vertexSource.glsl");
 	// Testing game object capabilities
-	const GameObject squareGobj(square, shader, glm::vec2(0.0f), 25.0f, glm::vec2(1.2f));
+	GameObject squareGobj(square, shader, glm::vec2(0.0f), 25.0f, glm::vec2(1.2f));
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -55,8 +55,11 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		// Update camera
-		cam.setPosition(cam.getPosition() + glm::vec2(0.1f, 0.0f) * deltaTime);
 		cam.updateCameraMatrix();
+		// Update object rotation cuz funny
+		squareGobj.changeRotation(deltaTime * 100.0f);
+		squareGobj.changePosition(glm::vec2(0.01f) * deltaTime);
+		squareGobj.changeScale(glm::vec2(-0.1f) * deltaTime);
 		// Draw game object
 		squareGobj.draw(cam);
 		// Swap buffers and poll events
