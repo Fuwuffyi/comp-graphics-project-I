@@ -1,15 +1,12 @@
-#include <glm/gtc/type_ptr.hpp>
-
 #include "Window.hpp"
 #include "Camera.hpp"
-#include "Shader.hpp"
-#include "Mesh.hpp"
+#include "GameObject.hpp"
 
 int main() {
 	// Initialize glfw
 	if (!glfwInit()) {
 		std::cerr << "Could not initialize glfw!" << std::endl;
-		return -1;
+		return EXIT_FAILURE;
 	}
 	// Set opengl version to V3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -20,6 +17,8 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	// Add double buffering
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+	// Eanable multisampling (MSAA 4x)
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	// Create the window
 	Window window("Test window", 800, 800);
 	window.setWindowActive();
@@ -37,9 +36,11 @@ int main() {
 		0, 1, 3
 	};
 	// Testing mesh
-	const Mesh square(vertices, indices);
+	const std::shared_ptr<Mesh> square = std::make_shared<Mesh>(vertices, indices, GL_TRIANGLES);
 	// Create shader
-	const Shader shader("fragmentSource.glsl", "vertexSource.glsl");
+	const std::shared_ptr<Shader> shader = std::make_shared<Shader>("fragmentSource.glsl", "vertexSource.glsl");
+	// Testing game object capabilities
+	const GameObject squareGobj(square, shader, glm::vec2(0.0f), 25.0f, glm::vec2(1.2f));
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -51,19 +52,16 @@ int main() {
 		const float deltaTime = static_cast<float>(currTime - prevTime);
 		prevTime = currTime;
 		// Clear color buffer
-		glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		// Update camera
 		cam.setPosition(cam.getPosition() + glm::vec2(0.1f, 0.0f) * deltaTime);
 		cam.updateCameraMatrix();
-		// Activate shader (and pass camera to shader)
-		shader.activate();
-		glUniformMatrix4fv(shader.getUniformLocation("camMatrix"), 1, GL_FALSE, glm::value_ptr(cam.getCameraMatrix()));
-		// Draw mesh
-		square.draw(GL_TRIANGLES);
+		// Draw game object
+		squareGobj.draw(cam);
 		// Swap buffers and poll events
 		window.swapBuffers();
 		glfwPollEvents();
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }

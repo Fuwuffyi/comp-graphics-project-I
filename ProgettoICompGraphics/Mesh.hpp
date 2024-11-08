@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Camera.hpp"
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include "ElementBuffer.hpp"
@@ -10,11 +11,12 @@ private:
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 public:
+	const uint32_t drawType;
 	const VertexArray vao;
 	const VertexBuffer vbo;
 	const ElementBuffer ebo;
 	const BoundingBox aabb; // Axis aligned bounding box
 
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
-	void draw(const uint32_t drawType) const;
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const uint32_t _drawType);
+	void draw() const;
 };
