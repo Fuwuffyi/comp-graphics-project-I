@@ -3,7 +3,6 @@
 #include "Vertex.hpp"
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 uint32_t VertexArray::generateBuffer() {
 	uint32_t id;

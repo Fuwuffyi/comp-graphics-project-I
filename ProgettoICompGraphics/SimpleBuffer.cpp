@@ -1,7 +1,6 @@
 #include "SimpleBuffer.hpp"
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 uint32_t SimpleBuffer::generateBuffer() {
 	uint32_t id;

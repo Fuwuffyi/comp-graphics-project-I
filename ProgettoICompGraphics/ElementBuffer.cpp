@@ -1,7 +1,6 @@
 #include "ElementBuffer.hpp"
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 ElementBuffer::ElementBuffer(const std::vector<uint32_t>& indices, const bool dynamic)
 	:
