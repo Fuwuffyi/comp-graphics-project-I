@@ -22,7 +22,7 @@ int main() {
 	// Eanable multisampling (MSAA 4x)
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	// Create the window
-	Window window("Test window", 800, 800);
+	Window window("Test window", 1600, 900);
 	window.setWindowActive();
 	// Game camera
 	Camera cam(glm::vec2(-0.5f, -0.5f));
@@ -42,6 +42,11 @@ int main() {
 	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
 	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
 	const Shader shader("fragmentSource.glsl", "vertexSource.glsl");
+	// Set some static uniforms (the camera's projection matrix does not change)
+	bgShader.activate();
+	glUniformMatrix4fv(bgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
+	fgShader.activate();
+	glUniformMatrix4fv(fgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -60,13 +65,11 @@ int main() {
 		cam.updateCameraMatrix();
 		// ----- Draw Background -----
 		bgShader.activate();
-		glUniformMatrix4fv(bgShader.getUniformLocation("matrixProjection"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
 		squareMesh.draw();
 		// ----- Draw objects -----
 		
 		// ----- Draw foreground -----
 		fgShader.activate();
-		glUniformMatrix4fv(fgShader.getUniformLocation("matrixProjection"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
 		glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
 		squareMesh.draw();
 		// Swap buffers and poll events
