@@ -7,6 +7,7 @@
 class Shader {
 private:
 	static std::string readShaderSource(const std::string& shaderFile);
+	void checkErrors(const std::string& shaderType, const uint32_t shaderId) const;
 
 	std::unordered_map<std::string, uint32_t> uniformLocations;
 public:

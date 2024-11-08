@@ -7,6 +7,8 @@
 #include <fstream>
 #include <memory>
 
+#include <iostream>
+
 std::string Shader::readShaderSource(const std::string& shaderFile) {
 	std::ifstream file(shaderFile, std::ios::binary);
 	if (!file) {
@@ -18,6 +20,24 @@ std::string Shader::readShaderSource(const std::string& shaderFile) {
 	std::string contents(static_cast<uint64_t>(size), ' ');
 	file.read(&contents[0], static_cast<int64_t>(contents.size()));
 	return contents;
+}
+
+void Shader::checkErrors(const std::string& shaderType, const uint32_t shaderId) const {
+	// Check if shader has compiled successfully
+	int32_t isCompiled;
+	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &isCompiled);
+	if (!isCompiled) {
+		// Get error buffer length
+		int32_t buffLength;
+		glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &buffLength);
+		// Get error buffer
+		std::vector<char> errorLog(buffLength);
+		glGetShaderInfoLog(shaderId, buffLength, &buffLength, &errorLog[0]);
+		// Print out error
+		std::cerr << shaderType << " ERROR:" << '\n' << errorLog.data() << std::endl;
+		// Delete shader if not compiled
+		glDeleteShader(shaderId);
+	}
 }
 
 Shader::Shader(const std::string& fragmentFile, const std::string& vertexFile)
@@ -33,10 +53,12 @@ Shader::Shader(const std::string& fragmentFile, const std::string& vertexFile)
 	const uint32_t vertShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertShader, 1, &vertSource, nullptr);
 	glCompileShader(vertShader);
+	this->checkErrors("VERTEX", vertShader);
 	// Compile fragment shader
 	const uint32_t fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragShader, 1, &fragSource, nullptr);
 	glCompileShader(fragShader);
+	this->checkErrors("FRAGMENT", fragShader);
 	// Create the program and link shaders
 	glAttachShader(this->id, vertShader);
 	glAttachShader(this->id, fragShader);
