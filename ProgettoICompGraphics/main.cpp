@@ -24,9 +24,9 @@ int main() {
 	// Create the window
 	Window window("Test window", 800, 800);
 	window.setWindowActive();
-	// Create a test camera
+	// Game camera
 	Camera cam(glm::vec2(-0.5f, -0.5f));
-	// Test to draw some stuff
+	// Window plane mesh
 	const std::vector<Vertex> vertices = {
 		Vertex { glm::vec2(0.0f, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) },
 		Vertex { glm::vec2(0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) },
@@ -38,7 +38,7 @@ int main() {
 		0, 2, 3
 	};
 	const Mesh squareMesh(vertices, indices, GL_TRIANGLES);
-	// Create shader
+	// Create the shaders
 	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
 	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
 	const Shader shader("fragmentSource.glsl", "vertexSource.glsl");
@@ -63,10 +63,11 @@ int main() {
 		glUniformMatrix4fv(bgShader.getUniformLocation("matrixProjection"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
 		squareMesh.draw();
 		// ----- Draw objects -----
-
+		
 		// ----- Draw foreground -----
 		fgShader.activate();
 		glUniformMatrix4fv(fgShader.getUniformLocation("matrixProjection"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
+		glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
 		squareMesh.draw();
 		// Swap buffers and poll events
 		window.swapBuffers();
