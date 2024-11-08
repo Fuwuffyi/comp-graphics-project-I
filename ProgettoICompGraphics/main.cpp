@@ -2,6 +2,8 @@
 #include "Camera.hpp"
 #include "GameObject.hpp"
 
+#include <glm/gtc/type_ptr.hpp>
+
 int main() {
 	// Initialize glfw
 	if (!glfwInit()) {
@@ -26,21 +28,20 @@ int main() {
 	Camera cam(glm::vec2(-0.5f, -0.5f));
 	// Test to draw some stuff
 	const std::vector<Vertex> vertices = {
-		Vertex { glm::vec2(0.25f, 0.25f), glm::vec4(1.0f, 0.0f, 0.0f, 0.3f) },
-		Vertex { glm::vec2(-0.25f, -0.25f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) },
-		Vertex { glm::vec2(0.25f, -0.25f), glm::vec4(0.5f, 1.0f, 0.5f, 1.0f) },
-		Vertex { glm::vec2(-0.25f, 0.25f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) }
+		Vertex { glm::vec2(0.0f, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) },
+		Vertex { glm::vec2(0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) },
+		Vertex { glm::vec2(1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) },
+		Vertex { glm::vec2(1.0f, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) }
 	};
 	const std::vector<uint32_t> indices = {
 		0, 1, 2,
-		0, 1, 3
+		0, 2, 3
 	};
-	// Testing mesh
-	const std::shared_ptr<Mesh> square = std::make_shared<Mesh>(vertices, indices, GL_TRIANGLES);
+	const Mesh squareMesh(vertices, indices, GL_TRIANGLES);
 	// Create shader
-	const std::shared_ptr<Shader> shader = std::make_shared<Shader>("fragmentSource.glsl", "vertexSource.glsl");
-	// Testing game object capabilities
-	GameObject squareGobj(square, shader, glm::vec2(0.0f), 25.0f, glm::vec2(1.2f));
+	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
+	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
+	const Shader shader("fragmentSource.glsl", "vertexSource.glsl");
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -54,14 +55,19 @@ int main() {
 		// Clear color buffer
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		// ----- Update game logic stuff -----
 		// Update camera
 		cam.updateCameraMatrix();
-		// Update object rotation cuz funny
-		squareGobj.changeRotation(deltaTime * 100.0f);
-		squareGobj.changePosition(glm::vec2(0.01f) * deltaTime);
-		squareGobj.changeScale(glm::vec2(-0.1f) * deltaTime);
-		// Draw game object
-		squareGobj.draw(cam);
+		// ----- Draw Background -----
+		bgShader.activate();
+		glUniformMatrix4fv(bgShader.getUniformLocation("matrixProjection"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
+		squareMesh.draw();
+		// ----- Draw objects -----
+
+		// ----- Draw foreground -----
+		fgShader.activate();
+		glUniformMatrix4fv(fgShader.getUniformLocation("matrixProjection"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
+		squareMesh.draw();
 		// Swap buffers and poll events
 		window.swapBuffers();
 		glfwPollEvents();

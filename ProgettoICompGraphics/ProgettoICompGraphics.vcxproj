@@ -157,6 +157,10 @@
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bgFragShader.glsl" />
+    <None Include="bgVertShader.glsl" />
+    <None Include="fgFragShader.glsl" />
+    <None Include="fgVertShader.glsl" />
     <None Include="fragmentSource.glsl" />
     <None Include="vertexSource.glsl" />
   </ItemGroup>
