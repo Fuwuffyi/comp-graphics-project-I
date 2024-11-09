@@ -36,7 +36,7 @@ GameObject::GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2
 	this->updateScaleMatrix();
 }
 
-const glm::vec2& GameObject::getPostion() const {
+const glm::vec2& GameObject::getPosition() const {
 	return this->position;
 }
 

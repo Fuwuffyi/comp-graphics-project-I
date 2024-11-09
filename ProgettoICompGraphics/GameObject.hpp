@@ -33,7 +33,7 @@ public:
 	GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float rot);
 	GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float rot, const glm::vec2& _scale);
 
-	const glm::vec2& getPostion() const;
+	const glm::vec2& getPosition() const;
 	const float getRotation() const;
 	const glm::vec2& getScale() const;
 
