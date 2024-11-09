@@ -54,6 +54,12 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VertexArray.hpp">
@@ -86,12 +92,30 @@
     <ClInclude Include="GameObject.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Keyboard.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertexSource.glsl">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="fragmentSource.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="fgVertShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="bgFragShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="bgVertShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="fgFragShader.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

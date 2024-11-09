@@ -1,5 +1,8 @@
 #include "Window.hpp"
 
+#include "Keyboard.hpp"
+#include "Mouse.hpp"
+
 void Window::framebufferSizeCallback(GLFWwindow* window, const int32_t newWidth, const int32_t newHeight) {
 	// Set window's object data on resize
 	Window* windowObj = static_cast<Window*>(glfwGetWindowUserPointer(window));
@@ -27,6 +30,11 @@ Window::Window(const std::string& _title, const uint32_t _width, const uint32_t 
 	glfwSetWindowUserPointer(this->glWindow, this);
 	// Set window resize callback
 	glfwSetFramebufferSizeCallback(this->glWindow, Window::framebufferSizeCallback);
+	// Set input callbacks
+	glfwSetKeyCallback(this->glWindow, Keyboard::keyCallback);
+	glfwSetCursorPosCallback(this->glWindow, Mouse::cursorPosCallback);
+	glfwSetMouseButtonCallback(this->glWindow, Mouse::mouseButtonCallback);
+	glfwSetScrollCallback(this->glWindow, Mouse::mouseWheelCallback);
 }
 
 Window::~Window() {
