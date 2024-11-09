@@ -147,6 +147,7 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshReader.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleBuffer.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="HermiteMesh.hpp" />
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="Mesh.hpp" />
+    <ClInclude Include="MeshReader.hpp" />
     <ClInclude Include="Mouse.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="SimpleBuffer.hpp" />
@@ -183,8 +185,9 @@
     <None Include="bgVertShader.glsl" />
     <None Include="fgFragShader.glsl" />
     <None Include="fgVertShader.glsl" />
-    <None Include="fragmentSource.glsl" />
-    <None Include="vertexSource.glsl" />
+    <None Include="baseFragShader.glsl" />
+    <None Include="baseVertShader.glsl" />
+    <None Include="window_mesh.mesh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

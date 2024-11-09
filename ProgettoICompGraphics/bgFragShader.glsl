@@ -126,7 +126,7 @@ void main() {
         col = vec3(dif);
         col.rgb = pow(col.rgb, vec3(.4545));
     } else {
-        col = vec3(backgroundStars((ro + vec3(1., .5 , 0.5)) / 40., rd));
+        col = vec3(backgroundStars((ro / 100.) + vec3(1., .5 , 0.5), rd));
     }
     // Gamma correction
     fragColor = vec4(col, 1.);

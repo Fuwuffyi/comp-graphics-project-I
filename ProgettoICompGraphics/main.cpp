@@ -1,10 +1,7 @@
 #include "Window.hpp"
 #include "Camera.hpp"
+#include "MeshReader.hpp"
 #include "GameObject.hpp"
-#include "HermiteMesh.hpp"
-
-#include "Mouse.hpp"
-#include "Keyboard.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -29,28 +26,18 @@ int main() {
 	Window window("Test window", 1600, 900);
 	window.setWindowActive();
 	// Game camera
-	Camera cam(glm::vec2(-0.5f, -0.5f));
+	Camera camera(glm::vec2(-0.5f, -0.5f));
 	// Window plane mesh
-	const std::vector<Vertex> vertices = {
-		Vertex { glm::vec2(0.0f, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) },
-		Vertex { glm::vec2(0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) },
-		Vertex { glm::vec2(1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) },
-		Vertex { glm::vec2(1.0f, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) }
-	};
-	const std::vector<uint32_t> indices = {
-		0, 1, 2,
-		0, 2, 3
-	};
-	const Mesh squareMesh(vertices, indices, GL_TRIANGLES);
+	const Mesh squareMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES);
 	// Create the shaders
 	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
 	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
 	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
 	// Set some static uniforms (the camera's projection matrix does not change)
 	bgShader.activate();
-	glUniformMatrix4fv(bgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
+	glUniformMatrix4fv(bgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(camera.getProjectionMatrix()));
 	fgShader.activate();
-	glUniformMatrix4fv(fgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));
+	glUniformMatrix4fv(fgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(camera.getProjectionMatrix()));
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -65,13 +52,13 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		// ----- Update game logic stuff -----
-		cam.setPosition(cam.getPosition() + glm::vec2(Mouse::getDx(), Mouse::getDy()));
+		
 		// Update camera
-		cam.updateCameraMatrix();
+		camera.updateCameraMatrix();
 		// ----- Draw Background -----
 		bgShader.activate();
 		glUniform1f(bgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
-		glUniform2f(bgShader.getUniformLocation("cameraPos"), cam.getPosition().x, cam.getPosition().y);
+		glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
 		squareMesh.draw();
 		// ----- Draw objects -----
 		

@@ -90,6 +90,9 @@
     <ClCompile Include="HermiteMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MeshReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VertexArray.hpp">
@@ -158,12 +161,15 @@
     <ClInclude Include="HermiteMesh.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MeshReader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertexSource.glsl">
+    <None Include="baseVertShader.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="fragmentSource.glsl">
+    <None Include="baseFragShader.glsl">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="fgVertShader.glsl">
@@ -176,6 +182,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="fgFragShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="window_mesh.mesh">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
