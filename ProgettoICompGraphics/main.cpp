@@ -45,7 +45,7 @@ int main() {
 	// Create the shaders
 	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
 	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
-	const Shader shader("fragmentSource.glsl", "vertexSource.glsl");
+	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
 	// Set some static uniforms (the camera's projection matrix does not change)
 	bgShader.activate();
 	glUniformMatrix4fv(bgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(cam.getProjectionMatrix()));

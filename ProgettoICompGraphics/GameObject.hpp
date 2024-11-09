@@ -25,13 +25,13 @@ private:
 	void updateObjectMatrix();
 
 public:
-	const std::shared_ptr<Mesh> mesh;
-	const std::shared_ptr<Shader> shader;
+	const Mesh* mesh;
+	const Shader* shader;
 
-	GameObject(const std::shared_ptr<Mesh>& _mesh, const std::shared_ptr<Shader> _shader, const glm::vec2& pos);
-	GameObject(const std::shared_ptr<Mesh>& _mesh, const std::shared_ptr<Shader> _shader, const glm::vec2& pos, const glm::vec2& _scale);
-	GameObject(const std::shared_ptr<Mesh>& _mesh, const std::shared_ptr<Shader> _shader, const glm::vec2& pos, const float rot);
-	GameObject(const std::shared_ptr<Mesh>& _mesh, const std::shared_ptr<Shader> _shader, const glm::vec2& pos, const float rot, const glm::vec2& _scale);
+	GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos);
+	GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const glm::vec2& _scale);
+	GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float rot);
+	GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float rot, const glm::vec2& _scale);
 
 	const glm::vec2& getPostion() const;
 	const float getRotation() const;
