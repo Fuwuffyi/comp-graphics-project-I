@@ -1,6 +1,10 @@
 #include "Window.hpp"
 #include "Camera.hpp"
 #include "GameObject.hpp"
+#include "HermiteMesh.hpp"
+
+#include "Mouse.hpp"
+#include "Keyboard.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -61,10 +65,13 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		// ----- Update game logic stuff -----
+		cam.setPosition(cam.getPosition() + glm::vec2(Mouse::getDx(), Mouse::getDy()));
 		// Update camera
 		cam.updateCameraMatrix();
 		// ----- Draw Background -----
 		bgShader.activate();
+		glUniform1f(bgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
+		glUniform2f(bgShader.getUniformLocation("cameraPos"), cam.getPosition().x, cam.getPosition().y);
 		squareMesh.draw();
 		// ----- Draw objects -----
 		

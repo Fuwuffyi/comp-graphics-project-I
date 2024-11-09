@@ -7,7 +7,7 @@
 #include "BoundingBox.hpp"
 
 class Mesh {
-private:
+protected:
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 public:
@@ -18,5 +18,5 @@ public:
 	const BoundingBox aabb; // Axis aligned bounding box
 
 	Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const uint32_t _drawType);
-	void draw() const;
+	virtual void draw() const;
 };

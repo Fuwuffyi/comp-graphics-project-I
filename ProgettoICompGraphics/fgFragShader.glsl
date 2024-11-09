@@ -19,7 +19,7 @@ void drawScanlines(inout vec3 color, vec2 uv) {
 }
 
 void main() {
-    vec4 col = vec4(vec3(1.0), 0.3);
+    vec4 col = vec4(vec3(1.0), 0.2);
     drawVignette(col.xyz, uv);
     drawScanlines(col.xyz, uv);
 	fragColor = col;
