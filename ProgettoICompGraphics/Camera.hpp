@@ -20,6 +20,7 @@ public:
 	const glm::vec2& getPosition() const;
 
 	void setPosition(const glm::vec2& _position);
+	void changePosition(const glm::vec2& offset);
 
 	const glm::mat4& getViewMatrix() const;
 	const glm::mat4& getProjectionMatrix() const;

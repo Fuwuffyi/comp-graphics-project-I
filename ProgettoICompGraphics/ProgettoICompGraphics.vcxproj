@@ -187,6 +187,7 @@
     <None Include="fgVertShader.glsl" />
     <None Include="baseFragShader.glsl" />
     <None Include="baseVertShader.glsl" />
+    <None Include="player_mesh.mesh" />
     <None Include="window_mesh.mesh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -187,5 +187,8 @@
     <None Include="window_mesh.mesh">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="player_mesh.mesh">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

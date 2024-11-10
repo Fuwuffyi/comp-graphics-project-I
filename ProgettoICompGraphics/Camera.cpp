@@ -31,6 +31,11 @@ void Camera::setPosition(const glm::vec2& _position) {
 	this->updateViewMatrix();
 }
 
+void Camera::changePosition(const glm::vec2& offset) {
+	this->position += offset;
+	this->updateViewMatrix();
+}
+
 const glm::mat4& Camera::getViewMatrix() const {
 	return this->viewMatrix;
 }

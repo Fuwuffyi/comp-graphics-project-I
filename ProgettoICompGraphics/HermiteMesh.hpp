@@ -11,8 +11,8 @@ struct HermiteVertex {
 
 class HermiteMesh : public Mesh {
 	private:
-		static std::vector<Vertex> calculateHermiteVertices(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps, const bool loop);
-		static std::vector<uint32_t> generateHermiteIndices(const uint32_t vertexCount, const bool loop);
+		static std::vector<Vertex> calculateHermiteVertices(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps);
+		static std::vector<uint32_t> generateHermiteIndices(const uint32_t vertexCount);
 	public:
-		HermiteMesh(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps, const bool loop = true);
+		HermiteMesh(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps);
 };

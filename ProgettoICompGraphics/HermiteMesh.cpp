@@ -4,17 +4,14 @@
 
 #include <iostream>
 
-HermiteMesh::HermiteMesh(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps, const bool loop)
+HermiteMesh::HermiteMesh(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps)
 :
     Mesh(
-        HermiteMesh::calculateHermiteVertices(controlPoints, steps, loop),
-        HermiteMesh::generateHermiteIndices((controlPoints.size() - 1) * steps, loop),
-        loop ? GL_LINE_LOOP : GL_TRIANGLE_FAN
+        HermiteMesh::calculateHermiteVertices(controlPoints, steps),
+        HermiteMesh::generateHermiteIndices((controlPoints.size() - 1) * steps),
+        GL_LINE_LOOP
     )
-{
-    std::cout << this->vertices.size() << std::endl;
-    std::cout << this->indices.size() << std::endl;
-}
+{}
 
 static glm::vec2 calculateTangent(const std::vector<HermiteVertex>& controlPoints, size_t index, bool isStart) {
     const HermiteVertex& point = controlPoints[index];
@@ -45,13 +42,10 @@ static glm::vec2 calculateTangent(const std::vector<HermiteVertex>& controlPoint
     return tangent;
 }
 
-std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps, const bool loop) {
+std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps) {
     std::vector<Vertex> vertices;
-    if (loop) {
-        vertices.emplace_back(controlPoints[0].vert);
-    }
     // Iterate through control points in pairs
-    for (uint32_t i = 0 + loop ? 1 : 0; i < controlPoints.size() - 1; ++i) {
+    for (uint32_t i = 0; i < controlPoints.size() - 1; ++i) {
         const HermiteVertex& p0 = controlPoints[i];
         const HermiteVertex& p1 = controlPoints[i + 1];
         // Calculate tangent for p0 and p1
@@ -75,11 +69,8 @@ std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<Herm
     return vertices;
 }
 
-std::vector<uint32_t> HermiteMesh::generateHermiteIndices(const uint32_t vertexCount, const bool loop) {
+std::vector<uint32_t> HermiteMesh::generateHermiteIndices(const uint32_t vertexCount) {
 	std::vector<uint32_t> indices;
-    if (loop) {
-        indices.emplace_back(0);
-    }
     for (uint32_t i = 0; i < vertexCount; ++i) {
         indices.emplace_back(i);
     }

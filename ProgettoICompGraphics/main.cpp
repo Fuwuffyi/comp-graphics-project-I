@@ -27,12 +27,15 @@ int main() {
 	window.setWindowActive();
 	// Game camera
 	Camera camera(glm::vec2(-0.5f, -0.5f));
-	// Window plane mesh
-	const Mesh squareMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES);
 	// Create the shaders
 	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
 	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
 	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
+	// Load meshes
+	const Mesh windowMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES); // Used for BG and FG
+	const Mesh playerMesh = MeshReader::loadBasicMesh("player_mesh.mesh", GL_TRIANGLES);
+	// Create game objects
+	GameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.05f, 0.05f));
 	// Set some static uniforms (the camera's projection matrix does not change)
 	bgShader.activate();
 	glUniformMatrix4fv(bgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(camera.getProjectionMatrix()));
@@ -52,20 +55,21 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		// ----- Update game logic stuff -----
-		
+		playerGameObject.changePosition(glm::vec2(0.0f, 0.5f) * deltaTime);
 		// Update camera
+		camera.changePosition(glm::vec2(0.0f, 0.5f) * deltaTime);
 		camera.updateCameraMatrix();
 		// ----- Draw Background -----
 		bgShader.activate();
 		glUniform1f(bgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
 		glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
-		squareMesh.draw();
+		windowMesh.draw();
 		// ----- Draw objects -----
-		
+		playerGameObject.draw(camera);
 		// ----- Draw foreground -----
 		fgShader.activate();
 		glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
-		squareMesh.draw();
+		windowMesh.draw();
 		// Swap buffers and poll events
 		window.swapBuffers();
 		glfwPollEvents();
