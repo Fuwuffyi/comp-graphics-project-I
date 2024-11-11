@@ -41,6 +41,10 @@ void Camera::changePosition(const glm::vec2& offset) {
 	this->updateViewMatrix();
 }
 
+float Camera::getInvAspectRatio() const {
+	return this->invAspectRatio;
+}
+
 void Camera::changeAspectRatio(const float _invAspectRatio) {
 	this->invAspectRatio = _invAspectRatio;
 	this->updateProjectionMatrix();

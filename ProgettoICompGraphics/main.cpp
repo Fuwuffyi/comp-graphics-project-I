@@ -58,6 +58,7 @@ int main() {
 		// ----- Draw Background -----
 		bgShader.activate();
 		glUniform1f(bgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
+		glUniform1f(bgShader.getUniformLocation("invAspectRatio"), camera.getInvAspectRatio());
 		glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
 		windowMesh.draw();
 		// ----- Draw objects -----
