@@ -51,7 +51,7 @@ vec3 backgroundStars(vec3 from, vec3 dir) {
 // ----- RAYMARCHED PLANETS -----
 
 #define STEP_COUNT 100
-#define MIN_DST .0001
+#define MIN_DST .001
 #define MAX_DST 500.
 
 float sphereDst(vec3 ray, vec3 pos, float size) {

@@ -23,7 +23,8 @@ int main() {
 	// Eanable multisampling (MSAA 4x)
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	// Create the window
-	Window window("Test window", 1600, 900);
+	const std::string windowName = "Asteroids";
+	Window window(windowName, 1600, 900);
 	window.setWindowActive();
 	// Game camera
 	Camera camera(glm::vec2(-0.5f, -0.5f), static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
@@ -46,6 +47,7 @@ int main() {
 		const double currTime = glfwGetTime();
 		const float deltaTime = static_cast<float>(currTime - prevTime);
 		prevTime = currTime;
+		window.setTitle(windowName + " - " + std::to_string(1.0f / deltaTime));
 		// Clear color buffer
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
