@@ -5,15 +5,16 @@
 class Camera {
 private:
 	glm::vec2 position;
-	glm::vec2 dimensions;
+	float invAspectRatio;
 
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
 	glm::mat4 cameraMatrix;
 
 	void updateViewMatrix();
+	void updateProjectionMatrix();
 public:
-	Camera(const glm::vec2& _position);
+	Camera(const glm::vec2& _position, const float invAspectRatio);
 
 	void updateCameraMatrix();
 
@@ -21,6 +22,8 @@ public:
 
 	void setPosition(const glm::vec2& _position);
 	void changePosition(const glm::vec2& offset);
+
+	void changeAspectRatio(const float _invAspectRatio);
 
 	const glm::mat4& getViewMatrix() const;
 	const glm::mat4& getProjectionMatrix() const;

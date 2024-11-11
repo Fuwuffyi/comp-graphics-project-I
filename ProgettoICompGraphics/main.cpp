@@ -26,7 +26,7 @@ int main() {
 	Window window("Test window", 1600, 900);
 	window.setWindowActive();
 	// Game camera
-	Camera camera(glm::vec2(-0.5f, -0.5f));
+	Camera camera(glm::vec2(-0.5f, -0.5f), static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 	// Create the shaders
 	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
 	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
@@ -36,11 +36,6 @@ int main() {
 	const Mesh playerMesh = MeshReader::loadBasicMesh("player_mesh.mesh", GL_TRIANGLES);
 	// Create game objects
 	GameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.05f, 0.05f));
-	// Set some static uniforms (the camera's projection matrix does not change)
-	bgShader.activate();
-	glUniformMatrix4fv(bgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(camera.getProjectionMatrix()));
-	fgShader.activate();
-	glUniformMatrix4fv(fgShader.getUniformLocation("camProjMat"), 1, GL_FALSE, glm::value_ptr(camera.getProjectionMatrix()));
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -57,7 +52,8 @@ int main() {
 		// ----- Update game logic stuff -----
 		playerGameObject.changePosition(glm::vec2(0.0f, 0.5f) * deltaTime);
 		// Update camera
-		camera.changePosition(glm::vec2(0.0f, 0.5f) * deltaTime);
+		camera.setPosition(playerGameObject.getPosition());
+		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 		camera.updateCameraMatrix();
 		// ----- Draw Background -----
 		bgShader.activate();
