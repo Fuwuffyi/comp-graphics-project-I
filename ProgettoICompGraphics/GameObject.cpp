@@ -82,6 +82,7 @@ void GameObject::draw(const Camera& cam) {
 	this->updateObjectMatrix();
 	this->shader->activate();
 	glUniformMatrix4fv(this->shader->getUniformLocation("objMatrix"), 1, GL_FALSE, glm::value_ptr(this->matObj));
+	glUniform1f(this->shader->getUniformLocation("invAspectRatio"), cam.getInvAspectRatio());
 	glUniformMatrix4fv(this->shader->getUniformLocation("camMatrix"), 1, GL_FALSE, glm::value_ptr(cam.getCameraMatrix()));
 	mesh->draw();
 }

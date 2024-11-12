@@ -8,7 +8,7 @@
 #include "Shader.hpp"
 
 class GameObject {
-private:
+protected:
 	glm::vec2 position;
 	float rotation;
 	glm::vec2 scale;

@@ -1,7 +1,9 @@
 #include "Window.hpp"
 #include "Camera.hpp"
 #include "MeshReader.hpp"
-#include "GameObject.hpp"
+#include "Keyboard.hpp"
+#include "Mouse.hpp"
+#include "PhysicsGameObject.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -36,7 +38,7 @@ int main() {
 	const Mesh windowMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES); // Used for BG and FG
 	const Mesh playerMesh = MeshReader::loadBasicMesh("player_mesh.mesh", GL_TRIANGLES);
 	// Create game objects
-	GameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.05f, 0.05f));
+	PhysicsGameObject playerGameObject(&playerMesh, &baseShader, 15.0f, glm::vec2(0.0f), 0.0f, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f));
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -51,8 +53,21 @@ int main() {
 		// Clear color buffer
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		// ----- Player Input -----
+		if (Keyboard::key(GLFW_KEY_A)) {
+			playerGameObject.applyRotationalForce(4.0f * deltaTime);
+		}
+		if (Keyboard::key(GLFW_KEY_D)) {
+			playerGameObject.applyRotationalForce(-4.0f * deltaTime);
+		}
+		if (Keyboard::key(GLFW_KEY_W)) {
+			playerGameObject.applyForce(playerGameObject.getHeadingVec() * 15.0f * deltaTime);
+		}
+		if (Keyboard::key(GLFW_KEY_S)) {
+			playerGameObject.applyForce(playerGameObject.getHeadingVec() * -15.0f * deltaTime);
+		}
 		// ----- Update game logic stuff -----
-		playerGameObject.changePosition(glm::vec2(0.0f, 0.5f) * deltaTime);
+		playerGameObject.update();
 		// Update camera
 		camera.setPosition(playerGameObject.getPosition());
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
