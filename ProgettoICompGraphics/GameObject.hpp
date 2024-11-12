@@ -21,9 +21,7 @@ protected:
 	void updateTranslationMatrix();
 	void updateRotationMatrix();
 	void updateScaleMatrix();
-
 	void updateObjectMatrix();
-
 public:
 	const Mesh* mesh;
 	const Shader* shader;
@@ -36,6 +34,11 @@ public:
 	const glm::vec2& getPosition() const;
 	const float getRotation() const;
 	const glm::vec2& getScale() const;
+
+	const glm::mat4& getTranslationMatrix() const;
+	const glm::mat4& getRotationMatrix() const;
+	const glm::mat4& getScaleMatrix() const;
+	const glm::mat4& getObjectMatrix() const;
 
 	void setPosition(const glm::vec2& pos);
 	void changePosition(const glm::vec2& offset);

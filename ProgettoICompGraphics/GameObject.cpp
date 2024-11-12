@@ -47,6 +47,21 @@ const float GameObject::getRotation() const {
 const glm::vec2& GameObject::getScale() const {
 	return this->scale;
 }
+const glm::mat4& GameObject::getTranslationMatrix() const {
+	return this->matTranslation;
+}
+
+const glm::mat4& GameObject::getRotationMatrix() const {
+	return this->matRotation;
+}
+
+const glm::mat4& GameObject::getScaleMatrix() const {
+	return this->matScale;
+}
+
+const glm::mat4& GameObject::getObjectMatrix() const {
+	return this->matObj;
+}
 
 void GameObject::setPosition(const glm::vec2& pos) {
 	this->position = pos;

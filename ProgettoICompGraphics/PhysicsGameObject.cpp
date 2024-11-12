@@ -1,35 +1,13 @@
 #include "PhysicsGameObject.hpp"
 
-PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const glm::vec2& pos)
+PhysicsGameObject::PhysicsGameObject(GameObject* _gameObject, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed)
 :
-	GameObject(_mesh, _shader, pos),
+	gameObject(_gameObject),
 	acceleration(startAccel),
 	rotationalAcceleration(startRotAccel),
-	mass(_mass)
-{}
-	
-PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const glm::vec2& pos, const glm::vec2& _scale)
-:
-	GameObject(_mesh, _shader, pos, _scale),
-	acceleration(startAccel),
-	rotationalAcceleration(startRotAccel),
-	mass(_mass)
-{}
-
-PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const glm::vec2& pos, const float rot)
-:
-	GameObject(_mesh, _shader, pos, rot),
-	acceleration(startAccel),
-	rotationalAcceleration(startRotAccel),
-	mass(_mass)
-{}
-
-PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const glm::vec2& pos, const float rot, const glm::vec2& _scale)
-:
-	GameObject(_mesh, _shader, pos, rot, _scale),
-	acceleration(startAccel),
-	rotationalAcceleration(startRotAccel),
-	mass(_mass)
+	mass(_mass),
+	maxSpeed(_maxSpeed),
+	maxRotSpeed(_maxRotSpeed)
 {}
 
 void PhysicsGameObject::setAcceleration(const glm::vec2& newAccel) {
@@ -38,9 +16,9 @@ void PhysicsGameObject::setAcceleration(const glm::vec2& newAccel) {
 
 void PhysicsGameObject::applyForce(const glm::vec2& force) {
 	this->acceleration += force / this->mass;
-	// Check for max speed (4.0f)
-	if (glm::dot(this->acceleration, this->acceleration) > 4.0f) {
-		this->acceleration = glm::normalize(this->acceleration) * 2.0f;
+	// Check for max speed
+	if (glm::dot(this->acceleration, this->acceleration) > maxSpeed * maxSpeed) {
+		this->acceleration = glm::normalize(this->acceleration) * maxSpeed;
 	}
 }
 
@@ -50,20 +28,16 @@ void PhysicsGameObject::setRotationalAcceleration(const float newRotAccel) {
 
 void PhysicsGameObject::applyRotationalForce(const float force) {
 	this->rotationalAcceleration += force / this->mass;
-	// Check for max rotational speed (4.0f)
-	if (this->rotationalAcceleration > 4.0f) {
-		this->rotationalAcceleration = 4.0f;
-	}
+	// Check for max rotational speed
+	this->rotationalAcceleration = glm::clamp(this->rotationalAcceleration, -maxRotSpeed, maxRotSpeed);
 }
 
 glm::vec2 PhysicsGameObject::getHeadingVec() const {
-	const glm::vec4 rotationDir = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f) * this->matRotation;
+	const glm::vec4 rotationDir = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f) * this->gameObject->getRotationMatrix();
 	return glm::vec2(rotationDir.x, -rotationDir.y);
 }
 
-void PhysicsGameObject::update() {
-	this->changePosition(this->acceleration);
-	this->acceleration *= 0.99f;
-	this->changeRotation(this->rotationalAcceleration);
-	this->rotationalAcceleration *= 0.99f;
+void PhysicsGameObject::update(const float deltaTime) {
+	this->gameObject->changePosition(this->acceleration * deltaTime);
+	this->gameObject->changeRotation(this->rotationalAcceleration * deltaTime);
 }
