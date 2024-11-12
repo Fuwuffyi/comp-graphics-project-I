@@ -55,6 +55,6 @@ namespace MeshReader{
             }
         }
         file.close();
-        return HermiteMesh(controlPoints, resolutionSteps);
+        return HermiteMesh(controlPoints, resolutionSteps, true);
     }
 };

@@ -36,7 +36,7 @@ int main() {
 	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
 	// Load meshes
 	const Mesh windowMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES); // Used for BG and FG
-	const Mesh playerMesh = MeshReader::loadBasicMesh("player_mesh.mesh", GL_TRIANGLES);
+	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_mesh.mesh", 25);
 	// Create game objects
 	GameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f));
 	PhysicsGameObject playerPhysicsGameObject(&playerGameObject, 15.0f, glm::vec2(0.0f), 0.0f, 20.0f, 180.0f);

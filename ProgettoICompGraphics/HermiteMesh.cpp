@@ -4,19 +4,18 @@
 
 #include <iostream>
 
-HermiteMesh::HermiteMesh(const std::vector<HermiteControlPoint>& controlPoints, const uint32_t steps)
+HermiteMesh::HermiteMesh(const std::vector<HermiteControlPoint>& controlPoints, const uint32_t steps, const bool filled)
 :
     Mesh(
-        HermiteMesh::calculateHermiteVertices(controlPoints, steps),
-        HermiteMesh::generateHermiteIndices(controlPoints.size() * steps + 1),
-        GL_LINE_LOOP
+        HermiteMesh::calculateHermiteVertices(controlPoints, steps, filled),
+        HermiteMesh::generateHermiteIndices(controlPoints.size() * steps + 1 + filled, filled),
+        filled ? GL_TRIANGLE_FAN : GL_LINE_LOOP
     )
 {}
 
 glm::vec2 HermiteMesh::calculateTangent(const std::vector<HermiteControlPoint>& controlPoints, size_t index, bool isStart) {
     const HermiteControlPoint& point = controlPoints[index];
     glm::vec2 tangent;
-
     if (isStart) {
         // Start tangent calculation
         if (index == 0) {
@@ -30,8 +29,7 @@ glm::vec2 HermiteMesh::calculateTangent(const std::vector<HermiteControlPoint>& 
             tangent.x = (1 - point.tension) * (1 - point.bias) * (1 - point.continuity) * (point.vert.position.x - prevPoint.vert.position.x) * 0.5f;
             tangent.y = (1 - point.tension) * (1 - point.bias) * (1 - point.continuity) * (point.vert.position.y - prevPoint.vert.position.y) * 0.5f;
         }
-    }
-    else {
+    } else {
         // End tangent calculation
         if (index == controlPoints.size() - 1) {
             // Use the first control point as next for a circular setup
@@ -48,8 +46,8 @@ glm::vec2 HermiteMesh::calculateTangent(const std::vector<HermiteControlPoint>& 
     return tangent;
 }
 
-std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<HermiteControlPoint>& controlPoints, const uint32_t steps) {
-    std::vector<Vertex> vertices; // Preallocate memory
+std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<HermiteControlPoint>& controlPoints, const uint32_t steps, const bool filled) {
+    std::vector<Vertex> vertices(controlPoints.size() * steps + 1 + filled); // Preallocate memory
     // Iterate through control points in pairs
     for (uint32_t i = 0; i < controlPoints.size(); ++i) {
         const uint32_t index0 = i;
@@ -61,6 +59,7 @@ std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<Herm
         const glm::vec2 tangent1 = HermiteMesh::calculateTangent(controlPoints, index1, false);
         // Interpolate the curve between control points p0 and p1
         for (uint32_t j = 0; j <= steps; ++j) {
+            const uint32_t currentIndex = i * steps + j;
             const float t = static_cast<float>(j) / steps;
             // Hermite basis functions
             const float phi0 = 2 * t * t * t - 3 * t * t + 1;
@@ -71,13 +70,14 @@ std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<Herm
             const float x = p0.vert.position.x * phi0 + tangent0.x * phi1 + p1.vert.position.x * psi0 + tangent1.x * psi1;
             const float y = p0.vert.position.y * phi0 + tangent0.y * phi1 + p1.vert.position.y * psi0 + tangent1.y * psi1;
             // Add the new vertex to the result
-            vertices.emplace_back(Vertex{ glm::vec2(x, y), controlPoints[i].vert.color });
+            vertices[currentIndex + filled] = Vertex{ glm::vec2(x, y), controlPoints[i].vert.color };
         }
     }
+    vertices[0] = Vertex{ glm::vec2(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) };
     return vertices;
 }
 
-std::vector<uint32_t> HermiteMesh::generateHermiteIndices(const uint32_t vertexCount) {
+std::vector<uint32_t> HermiteMesh::generateHermiteIndices(const uint32_t vertexCount, const bool filled) {
 	std::vector<uint32_t> indices;
     for (uint32_t i = 0; i < vertexCount; ++i) {
         indices.emplace_back(i);
