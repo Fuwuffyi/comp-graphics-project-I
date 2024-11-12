@@ -36,7 +36,7 @@ namespace MeshReader{
     }
 
     HermiteMesh loadHermiteMesh(const std::string& filename, const uint32_t resolutionSteps) {
-        std::vector<HermiteVertex> controlPoints;
+        std::vector<HermiteControlPoint> controlPoints;
         std::ifstream file(filename);
         if (!file.is_open()) {
             throw std::runtime_error("Failed to open mesh file");
@@ -47,7 +47,7 @@ namespace MeshReader{
             char type;
             ss >> type;
             if (type == 'v') {
-                HermiteVertex cp;
+                HermiteControlPoint cp;
                 ss >> cp.vert.position.x >> cp.vert.position.y >> 
                     cp.vert.color.r >> cp.vert.color.g >> cp.vert.color.b >> cp.vert.color.a >> 
                     cp.tension >> cp.bias >> cp.continuity;

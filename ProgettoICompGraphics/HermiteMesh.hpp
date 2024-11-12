@@ -2,7 +2,7 @@
 
 #include "Mesh.hpp"
 
-struct HermiteVertex {
+struct HermiteControlPoint {
 	Vertex vert;
 	float tension;
 	float bias;
@@ -11,8 +11,10 @@ struct HermiteVertex {
 
 class HermiteMesh : public Mesh {
 	private:
-		static std::vector<Vertex> calculateHermiteVertices(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps);
+		static std::vector<Vertex> calculateHermiteVertices(const std::vector<HermiteControlPoint>& controlPoints, const uint32_t steps);
 		static std::vector<uint32_t> generateHermiteIndices(const uint32_t vertexCount);
+
+		static glm::vec2 calculateTangent(const std::vector<HermiteControlPoint>& controlPoints, size_t index, bool isStart);
 	public:
-		HermiteMesh(const std::vector<HermiteVertex>& controlPoints, const uint32_t steps);
+		HermiteMesh(const std::vector<HermiteControlPoint>& controlPoints, const uint32_t steps);
 };
