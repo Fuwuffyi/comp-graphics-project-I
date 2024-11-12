@@ -3,6 +3,8 @@
 #include <math.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <iostream>
+
 Camera::Camera(const glm::vec2& _position, const float _invAspectRatio)
 	:
 	position(_position),
@@ -20,7 +22,7 @@ void Camera::updateViewMatrix() {
 }
 
 void Camera::updateProjectionMatrix() {
-	this->projectionMatrix = glm::ortho(-invAspectRatio, invAspectRatio, -1.0f, 1.0f);
+	this->projectionMatrix = glm::ortho(-1.0f, 1.0f, -invAspectRatio, invAspectRatio);
 }
 
 void Camera::updateCameraMatrix() {
