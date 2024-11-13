@@ -37,9 +37,9 @@ int main() {
 	// Load meshes
 	const Mesh windowMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES); // Used for BG and FG
 	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_hermite.mesh", 25);
-	const Mesh bulletMesh = MeshReader::loadBasicMesh("bullet_mesh.mesh", GL_TRIANGLES);
+	const HermiteMesh bulletMesh = MeshReader::loadHermiteMesh("bullet_hermite.mesh", 5);
 	// Create game objects
-	PhysicsGameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f), 15.0f, glm::vec2(0.0f), 0.0f, 20.0f, 180.0f);
+	PhysicsGameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f), 15.0f, glm::vec2(0.0f), 0.0f, 1.0f, 180.0f, 0.9f, 0.02f);
 	// Object vectors
 	std::vector<PhysicsGameObject> bulletVector;
 	// Enable blending
@@ -58,22 +58,21 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		// ----- Player Input -----
 		if (Keyboard::key(GLFW_KEY_A)) {
-			playerGameObject.applyRotationalForce(4.0f);
+			playerGameObject.applyRotationalForce(45.0f);
 		}
 		if (Keyboard::key(GLFW_KEY_D)) {
-			playerGameObject.applyRotationalForce(-4.0f);
+			playerGameObject.applyRotationalForce(-45.0f);
 		}
 		if (Keyboard::key(GLFW_KEY_W)) {
-			playerGameObject.applyForce(playerGameObject.getHeadingVec() * 3.0f);
+			playerGameObject.applyForce(playerGameObject.getHeadingVec() * 0.1f);
 		}
 		if (Keyboard::key(GLFW_KEY_S)) {
-			playerGameObject.applyForce(playerGameObject.getHeadingVec() * -3.0f);
+			playerGameObject.applyForce(playerGameObject.getHeadingVec() * -0.1f);
 		}
-		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
-			bulletVector.emplace_back(&bulletMesh, &baseShader, playerGameObject.getPosition(), playerGameObject.getRotation(), glm::vec2(0.05f), 1.0f, playerGameObject.getHeadingVec() * 2.0f, 0.0f, 5.0f, 0.0f);
-		}
-		// ----- Update game logic stuff -----
 		playerGameObject.update(deltaTime);
+		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
+			bulletVector.emplace_back(&bulletMesh, &baseShader, playerGameObject.getPosition(), playerGameObject.getRotation(), glm::vec2(0.0075f), 1.0f, playerGameObject.getHeadingVec() * 2.0f, 0.0f, 2.0f, 0.0f, 1.0f, 0.0f);
+		}
 		// Update camera
 		camera.setPosition(playerGameObject.getPosition());
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
@@ -85,11 +84,11 @@ int main() {
 		glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
 		windowMesh.draw();
 		// ----- Draw objects -----
-		playerGameObject.draw(camera);
 		for (PhysicsGameObject& obj : bulletVector) {
 			obj.update(deltaTime);
 			obj.draw(camera);
 		}
+		playerGameObject.draw(camera);
 		// ----- Draw foreground -----
 		fgShader.activate();
 		glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));

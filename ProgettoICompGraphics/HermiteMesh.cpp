@@ -59,7 +59,7 @@ std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<Herm
         const glm::vec2 tangent1 = HermiteMesh::calculateTangent(controlPoints, index1, false);
         // Interpolate the curve between control points p0 and p1
         for (uint32_t j = 0; j <= steps; ++j) {
-            const uint32_t currentIndex = i * steps + j;
+            const uint32_t currentIndex = index0 * steps + j;
             const float t = static_cast<float>(j) / steps;
             // Hermite basis functions
             const float phi0 = 2 * t * t * t - 3 * t * t + 1;
@@ -70,7 +70,7 @@ std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<Herm
             const float x = p0.vert.position.x * phi0 + tangent0.x * phi1 + p1.vert.position.x * psi0 + tangent1.x * psi1;
             const float y = p0.vert.position.y * phi0 + tangent0.y * phi1 + p1.vert.position.y * psi0 + tangent1.y * psi1;
             // Add the new vertex to the result
-            vertices[currentIndex + filled] = Vertex{ glm::vec2(x, y), controlPoints[i].vert.color };
+            vertices[currentIndex + filled] = Vertex{ glm::vec2(x, y), j < steps / 2 ? controlPoints[index0].vert.color : controlPoints[index1].vert.color };
         }
     }
     vertices[0] = Vertex{ glm::vec2(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) };

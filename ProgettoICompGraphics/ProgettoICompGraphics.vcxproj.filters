@@ -196,7 +196,7 @@
     <None Include="player_hermite.mesh">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="bullet_mesh.mesh">
+    <None Include="bullet_hermite.mesh">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

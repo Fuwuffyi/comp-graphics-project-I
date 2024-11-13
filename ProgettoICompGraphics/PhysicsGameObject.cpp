@@ -1,44 +1,52 @@
 #include "PhysicsGameObject.hpp"
 
 
-PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed)
+PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed, const float _fric, const float _rotFric)
 :
 	GameObject(_mesh, _shader, pos),
 	acceleration(startAccel),
 	rotationalAcceleration(startRotAccel),
 	mass(_mass),
 	maxSpeed(_maxSpeed),
-	maxRotSpeed(_maxRotSpeed)
+	maxRotSpeed(_maxRotSpeed),
+	fric(_fric),
+	rotFric(_rotFric)
 {}
 
-PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const glm::vec2& _scale, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed)
+PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const glm::vec2& _scale, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed, const float _fric, const float _rotFric)
 :
 	GameObject(_mesh, _shader, pos, _scale),
 	acceleration(startAccel),
 	rotationalAcceleration(startRotAccel),
 	mass(_mass),
 	maxSpeed(_maxSpeed),
-	maxRotSpeed(_maxRotSpeed)
+	maxRotSpeed(_maxRotSpeed),
+	fric(_fric),
+	rotFric(_rotFric)
 {}
 
-PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float rot, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed)
+PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float rot, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed, const float _fric, const float _rotFric)
 :
 	GameObject(_mesh, _shader, pos, rot),
 	acceleration(startAccel),
 	rotationalAcceleration(startRotAccel),
 	mass(_mass),
 	maxSpeed(_maxSpeed),
-	maxRotSpeed(_maxRotSpeed)
+	maxRotSpeed(_maxRotSpeed),
+	fric(_fric),
+	rotFric(_rotFric)
 {}
 
-PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float rot, const glm::vec2& _scale, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed)
+PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float rot, const glm::vec2& _scale, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed, const float _fric, const float _rotFric)
 :
 	GameObject(_mesh, _shader, pos, rot, _scale),
 	acceleration(startAccel),
 	rotationalAcceleration(startRotAccel),
 	mass(_mass),
 	maxSpeed(_maxSpeed),
-	maxRotSpeed(_maxRotSpeed)
+	maxRotSpeed(_maxRotSpeed),
+	fric(_fric),
+	rotFric(_rotFric)
 {}
 
 
@@ -71,5 +79,7 @@ glm::vec2 PhysicsGameObject::getHeadingVec() const {
 
 void PhysicsGameObject::update(const float deltaTime) {
 	this->changePosition(this->acceleration * deltaTime);
+	this->acceleration *= 1 - (1 - this->fric) * deltaTime;
 	this->changeRotation(this->rotationalAcceleration * deltaTime);
+	this->rotationalAcceleration *= 1 - (1 - this->rotFric) * deltaTime;
 }

@@ -113,7 +113,7 @@ vec3 calculateNormal(vec3 p) {
 void main() {
     vec2 trueUv = uv * 2. - 1.;
     // Initialization
-    vec3 ro = vec3(cameraPos, 0.); // Camera position
+    vec3 ro = vec3(cameraPos, 0.) * 10.0; // Camera position
     vec3 rd = normalize(vec3(trueUv, 1.0));
     vec3 col = vec3(0.0);
     

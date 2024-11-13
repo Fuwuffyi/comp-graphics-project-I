@@ -185,7 +185,7 @@
   <ItemGroup>
     <None Include="bgFragShader.glsl" />
     <None Include="bgVertShader.glsl" />
-    <None Include="bullet_mesh.mesh" />
+    <None Include="bullet_hermite.mesh" />
     <None Include="fgFragShader.glsl" />
     <None Include="fgVertShader.glsl" />
     <None Include="baseFragShader.glsl" />
