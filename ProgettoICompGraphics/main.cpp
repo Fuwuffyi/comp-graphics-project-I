@@ -77,6 +77,13 @@ int main() {
 			bullet.update(deltaTime);
 			bullet.draw(camera);
 		}
+		bulletVector.erase(std::remove_if(
+				bulletVector.begin(), 
+				bulletVector.end(), 
+				[](const Bullet& bullet) { return bullet.getShouldDelete(); }
+			), 
+			bulletVector.end()
+		);
 		player.draw(camera);
 		// ----- Draw foreground -----
 		fgShader.activate();

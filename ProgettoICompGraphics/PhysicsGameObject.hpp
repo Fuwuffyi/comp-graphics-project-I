@@ -6,13 +6,12 @@ class PhysicsGameObject : public GameObject {
 private:
 	glm::vec2 acceleration;
 	float rotationalAcceleration;
-public:
-	const float mass;
+	float mass;
 
-	const float maxSpeed;
-	const float maxRotSpeed;
-	const float fric;
-	const float rotFric;
+	float maxSpeed;
+	float maxRotSpeed;
+	float fric;
+	float rotFric;
 public:
 	PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed, const float _fric, const float _rotFric);
 	PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const glm::vec2& _scale, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed, const float _fric, const float _rotFric);
