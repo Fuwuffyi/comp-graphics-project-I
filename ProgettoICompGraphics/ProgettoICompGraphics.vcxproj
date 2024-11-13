@@ -185,11 +185,12 @@
   <ItemGroup>
     <None Include="bgFragShader.glsl" />
     <None Include="bgVertShader.glsl" />
+    <None Include="bullet_mesh.mesh" />
     <None Include="fgFragShader.glsl" />
     <None Include="fgVertShader.glsl" />
     <None Include="baseFragShader.glsl" />
     <None Include="baseVertShader.glsl" />
-    <None Include="player_mesh.mesh" />
+    <None Include="player_hermite.mesh" />
     <None Include="window_mesh.mesh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

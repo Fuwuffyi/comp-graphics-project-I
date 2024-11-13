@@ -22,8 +22,8 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	// Add double buffering
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
-	// Eanable multisampling (MSAA 4x)
-	glfwWindowHint(GLFW_SAMPLES, 4);
+	// Eanable multisampling (MSAA 2x)
+	glfwWindowHint(GLFW_SAMPLES, 2);
 	// Create the window
 	const std::string windowName = "Asteroids";
 	Window window(windowName, 900, 900);
@@ -36,10 +36,12 @@ int main() {
 	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
 	// Load meshes
 	const Mesh windowMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES); // Used for BG and FG
-	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_mesh.mesh", 25);
+	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_hermite.mesh", 25);
+	const Mesh bulletMesh = MeshReader::loadBasicMesh("bullet_mesh.mesh", GL_TRIANGLES);
 	// Create game objects
-	GameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f));
-	PhysicsGameObject playerPhysicsGameObject(&playerGameObject, 15.0f, glm::vec2(0.0f), 0.0f, 20.0f, 180.0f);
+	PhysicsGameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f), 15.0f, glm::vec2(0.0f), 0.0f, 20.0f, 180.0f);
+	// Object vectors
+	std::vector<PhysicsGameObject> bulletVector;
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -56,19 +58,22 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		// ----- Player Input -----
 		if (Keyboard::key(GLFW_KEY_A)) {
-			playerPhysicsGameObject.applyRotationalForce(4.0f);
+			playerGameObject.applyRotationalForce(4.0f);
 		}
 		if (Keyboard::key(GLFW_KEY_D)) {
-			playerPhysicsGameObject.applyRotationalForce(-4.0f);
+			playerGameObject.applyRotationalForce(-4.0f);
 		}
 		if (Keyboard::key(GLFW_KEY_W)) {
-			playerPhysicsGameObject.applyForce(playerPhysicsGameObject.getHeadingVec() * 3.0f);
+			playerGameObject.applyForce(playerGameObject.getHeadingVec() * 3.0f);
 		}
 		if (Keyboard::key(GLFW_KEY_S)) {
-			playerPhysicsGameObject.applyForce(playerPhysicsGameObject.getHeadingVec() * -3.0f);
+			playerGameObject.applyForce(playerGameObject.getHeadingVec() * -3.0f);
+		}
+		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
+			bulletVector.emplace_back(&bulletMesh, &baseShader, playerGameObject.getPosition(), playerGameObject.getRotation(), glm::vec2(0.05f), 1.0f, playerGameObject.getHeadingVec() * 2.0f, 0.0f, 5.0f, 0.0f);
 		}
 		// ----- Update game logic stuff -----
-		playerPhysicsGameObject.update(deltaTime);
+		playerGameObject.update(deltaTime);
 		// Update camera
 		camera.setPosition(playerGameObject.getPosition());
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
@@ -81,6 +86,10 @@ int main() {
 		windowMesh.draw();
 		// ----- Draw objects -----
 		playerGameObject.draw(camera);
+		for (PhysicsGameObject& obj : bulletVector) {
+			obj.update(deltaTime);
+			obj.draw(camera);
+		}
 		// ----- Draw foreground -----
 		fgShader.activate();
 		glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
