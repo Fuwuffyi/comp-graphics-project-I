@@ -77,7 +77,7 @@ glm::vec2 PhysicsGameObject::getHeadingVec() const {
 	return glm::vec2(rotationDir.x, -rotationDir.y);
 }
 
-void PhysicsGameObject::update(const float deltaTime) {
+void PhysicsGameObject::tickPhysics(const float deltaTime) {
 	this->changePosition(this->acceleration * deltaTime);
 	this->acceleration *= 1 - (1 - this->fric) * deltaTime;
 	this->changeRotation(this->rotationalAcceleration * deltaTime);

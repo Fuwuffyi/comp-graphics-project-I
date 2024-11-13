@@ -27,5 +27,5 @@ public:
 
 	glm::vec2 getHeadingVec() const;
 
-	void update(const float deltaTime);
+	void tickPhysics(const float deltaTime);
 };

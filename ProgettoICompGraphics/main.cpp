@@ -3,7 +3,8 @@
 #include "MeshReader.hpp"
 #include "Keyboard.hpp"
 #include "Mouse.hpp"
-#include "PhysicsGameObject.hpp"
+#include "Player.hpp"
+#include "Bullet.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -39,9 +40,9 @@ int main() {
 	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_hermite.mesh", 25);
 	const HermiteMesh bulletMesh = MeshReader::loadHermiteMesh("bullet_hermite.mesh", 5);
 	// Create game objects
-	PhysicsGameObject playerGameObject(&playerMesh, &baseShader, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f), 15.0f, glm::vec2(0.0f), 0.0f, 1.0f, 180.0f, 0.9f, 0.02f);
+	Player player(&playerMesh, &baseShader);
 	// Object vectors
-	std::vector<PhysicsGameObject> bulletVector;
+	std::vector<Bullet> bulletVector;
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -57,24 +58,12 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		// ----- Player Input -----
-		if (Keyboard::key(GLFW_KEY_A)) {
-			playerGameObject.applyRotationalForce(45.0f);
-		}
-		if (Keyboard::key(GLFW_KEY_D)) {
-			playerGameObject.applyRotationalForce(-45.0f);
-		}
-		if (Keyboard::key(GLFW_KEY_W)) {
-			playerGameObject.applyForce(playerGameObject.getHeadingVec() * 0.1f);
-		}
-		if (Keyboard::key(GLFW_KEY_S)) {
-			playerGameObject.applyForce(playerGameObject.getHeadingVec() * -0.1f);
-		}
-		playerGameObject.update(deltaTime);
+		player.update(deltaTime);
 		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
-			bulletVector.emplace_back(&bulletMesh, &baseShader, playerGameObject.getPosition(), playerGameObject.getRotation(), glm::vec2(0.0075f), 1.0f, playerGameObject.getHeadingVec() * 2.0f, 0.0f, 2.0f, 0.0f, 1.0f, 0.0f);
+			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
 		}
 		// Update camera
-		camera.setPosition(playerGameObject.getPosition());
+		camera.setPosition(player.getPosition());
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 		camera.updateCameraMatrix();
 		// ----- Draw Background -----
@@ -84,11 +73,11 @@ int main() {
 		glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
 		windowMesh.draw();
 		// ----- Draw objects -----
-		for (PhysicsGameObject& obj : bulletVector) {
-			obj.update(deltaTime);
-			obj.draw(camera);
+		for (Bullet& bullet : bulletVector) {
+			bullet.update(deltaTime);
+			bullet.draw(camera);
 		}
-		playerGameObject.draw(camera);
+		player.draw(camera);
 		// ----- Draw foreground -----
 		fgShader.activate();
 		glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
