@@ -5,13 +5,13 @@
 
 BoundingBox::BoundingBox(const std::vector<Vertex>& vertices) 
 :
-	maxMinValues({ std::numeric_limits<float>::max(), std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), std::numeric_limits<float>::min() })
+	maxMinValues({ std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity() })
 {
 	for (const Vertex& v : vertices) {
-		this->maxMinValues[0] = std::min(maxMinValues[0], v.position.x);
-		this->maxMinValues[1] = std::max(maxMinValues[1], v.position.x);
-		this->maxMinValues[2] = std::min(maxMinValues[2], v.position.y);
-		this->maxMinValues[3] = std::max(maxMinValues[3], v.position.y);
+		this->maxMinValues[0] = std::min(maxMinValues[0], v.position.x);	// 0 = minX
+		this->maxMinValues[1] = std::max(maxMinValues[1], v.position.x);	// 1 = maxX
+		this->maxMinValues[2] = std::min(maxMinValues[2], v.position.y);	// 2 = minY
+		this->maxMinValues[3] = std::max(maxMinValues[3], v.position.y);	// 3 = maxY
 	}
 }
 

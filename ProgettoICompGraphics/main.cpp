@@ -83,7 +83,6 @@ int main() {
 			[](const Bullet& bullet) { return bullet.getShouldDelete(); }),
 			bulletVector.end()
 		);
-		std::cout << asteroidVector[0].getBoundingBox().checkCollisions(player.getBoundingBox());
 		// Update camera
 		camera.setPosition(player.getPosition());
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
