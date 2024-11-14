@@ -9,6 +9,7 @@ uniform mat4 objMatrix;
 uniform mat4 camMatrix;
 
 void main() {
-    gl_Position = camMatrix * objMatrix * vec4(aPos, 0.0, 1.0);
+    vec2 pos = (length(aPos) == 0.0) ? vec2(0.0) : normalize(aPos);
+    gl_Position = camMatrix * objMatrix * vec4(pos, 0.0, 1.0);
     color = aCol;
 }

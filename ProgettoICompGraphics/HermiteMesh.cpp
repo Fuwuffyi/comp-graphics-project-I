@@ -73,7 +73,9 @@ std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<Herm
             vertices[currentIndex + filled] = Vertex{ glm::vec2(x, y), j < steps / 2 ? controlPoints[index0].vert.color : controlPoints[index1].vert.color };
         }
     }
-    vertices[0] = Vertex{ glm::vec2(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) };
+    if (filled) {
+        vertices[0] = Vertex{ glm::vec2(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) };
+    }
     return vertices;
 }
 

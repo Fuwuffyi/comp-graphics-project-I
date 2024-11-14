@@ -35,7 +35,7 @@ namespace MeshReader{
         return Mesh(vertices, indices, renderType);
     }
 
-    HermiteMesh loadHermiteMesh(const std::string& filename, const uint32_t resolutionSteps) {
+    HermiteMesh loadHermiteMesh(const std::string& filename, const uint32_t resolutionSteps, const bool filled) {
         std::vector<HermiteControlPoint> controlPoints;
         std::ifstream file(filename);
         if (!file.is_open()) {
@@ -55,6 +55,6 @@ namespace MeshReader{
             }
         }
         file.close();
-        return HermiteMesh(controlPoints, resolutionSteps, true);
+        return HermiteMesh(controlPoints, resolutionSteps, filled);
     }
 };

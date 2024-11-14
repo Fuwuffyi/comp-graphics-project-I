@@ -39,14 +39,14 @@ int main() {
 	const Shader asteroidShader("baseFragShader.glsl", "asteroidVertShader.glsl");
 	// Load meshes
 	const Mesh windowMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES); // Used for BG and FG
-	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_hermite.mesh", 25);
-	const HermiteMesh bulletMesh = MeshReader::loadHermiteMesh("bullet_hermite.mesh", 5);
-	const HermiteMesh asteroidMesh = MeshReader::loadHermiteMesh("asteroid_hermite.mesh", 50);
+	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_hermite.mesh", 15, true);
+	const HermiteMesh bulletMesh = MeshReader::loadHermiteMesh("bullet_hermite.mesh", 5, true);
+	const HermiteMesh asteroidMesh = MeshReader::loadHermiteMesh("asteroid_hermite.mesh", 20, true);
 	// Create game objects
 	Player player(&playerMesh, &baseShader);
 	std::vector<Bullet> bulletVector;
 	std::vector<Asteroid> asteroidVector;
-	for (uint32_t i = 0; i < 20; ++i) {
+	for (uint32_t i = 0; i < 2; ++i) {
 		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(0.1f), glm::vec2(0.0f));
 	}
 	// Enable blending
