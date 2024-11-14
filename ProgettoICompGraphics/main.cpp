@@ -6,6 +6,7 @@
 #include "Asteroid.hpp"
 #include "Player.hpp"
 #include "Bullet.hpp"
+#include "GUI.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -30,6 +31,8 @@ int main() {
 	const std::string windowName = "Asteroids";
 	Window window(windowName, 900, 900);
 	window.setWindowActive();
+	// Setup gui
+	GUI gui(window.getWindowPtr());
 	// Game camera
 	Camera camera(glm::vec2(-0.5f, -0.5f), static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 	// Create the shaders
@@ -63,6 +66,8 @@ int main() {
 		// Clear color buffer
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		// ----- Get new GUI frame -----
+		gui.newFrame();
 		// ----- Player Update stuff -----
 		player.update(deltaTime);
 		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
@@ -88,6 +93,7 @@ int main() {
 					asteroidVector.erase(asteroidVector.begin() + (i - 1));
 					asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
 					asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
+					break;
 				}
 			}
 		}
@@ -113,6 +119,8 @@ int main() {
 		fgShader.activate();
 		glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
 		windowMesh.draw();
+		// ----- Render GUI -----
+		gui.render();
 		// Swap buffers and poll events
 		window.swapBuffers();
 		glfwPollEvents();

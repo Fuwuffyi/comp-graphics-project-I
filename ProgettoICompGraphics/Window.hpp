@@ -20,7 +20,8 @@ public:
 
 	uint32_t getWidth() const;
 	uint32_t getHeight() const;
-	std::string  getTitle() const;
+	GLFWwindow* getWindowPtr() const;
+	std::string getTitle() const;
 	void setTitle(const std::string& _title);
 
 	void setWindowActive() const;

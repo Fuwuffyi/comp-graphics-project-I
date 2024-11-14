@@ -50,6 +50,10 @@ uint32_t Window::getHeight() const {
 	return this->height;
 }
 
+GLFWwindow* Window::getWindowPtr() const {
+	return this->glWindow;
+}
+
 std::string Window::getTitle() const {
 	return this->title;
 }
