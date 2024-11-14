@@ -137,6 +137,7 @@
     <ClCompile Include="..\dependencies\include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\dependencies\include\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\dependencies\include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="..\dependencies\include\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\dependencies\include\imgui\imstb_textedit.h" />
     <ClInclude Include="..\dependencies\include\imgui\imstb_truetype.h" />
+    <ClInclude Include="Asteroid.hpp" />
     <ClInclude Include="BoundingBox.hpp" />
     <ClInclude Include="Bullet.hpp" />
     <ClInclude Include="Camera.hpp" />
@@ -188,6 +190,8 @@
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="asteroidVertShader.glsl" />
+    <None Include="asteroid_hermite.mesh" />
     <None Include="bgFragShader.glsl" />
     <None Include="bgVertShader.glsl" />
     <None Include="bullet_hermite.mesh" />

@@ -3,6 +3,7 @@
 #include "MeshReader.hpp"
 #include "Keyboard.hpp"
 #include "Mouse.hpp"
+#include "Asteroid.hpp"
 #include "Player.hpp"
 #include "Bullet.hpp"
 
@@ -35,13 +36,14 @@ int main() {
 	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
 	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
 	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
+	const Shader asteroidShader("baseFragShader.glsl", "asteroidVertShader.glsl");
 	// Load meshes
 	const Mesh windowMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES); // Used for BG and FG
 	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_hermite.mesh", 25);
 	const HermiteMesh bulletMesh = MeshReader::loadHermiteMesh("bullet_hermite.mesh", 5);
+	const HermiteMesh asteroidMesh = MeshReader::loadHermiteMesh("asteroid_hermite.mesh", 50);
 	// Create game objects
 	Player player(&playerMesh, &baseShader);
-	// Object vectors
 	std::vector<Bullet> bulletVector;
 	// Enable blending
 	glEnable(GL_BLEND);
@@ -57,11 +59,22 @@ int main() {
 		// Clear color buffer
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		// ----- Player Input -----
+		// ----- Player Update stuff -----
 		player.update(deltaTime);
 		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
 			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
 		}
+		// ----- Bullet Update stuff -----
+		for (Bullet& bullet : bulletVector) {
+			bullet.update(deltaTime);
+		}
+		// Delete bullets that were marked for deletion
+		bulletVector.erase(std::remove_if(
+			bulletVector.begin(),
+			bulletVector.end(),
+			[](const Bullet& bullet) { return bullet.getShouldDelete(); }),
+			bulletVector.end()
+		);
 		// Update camera
 		camera.setPosition(player.getPosition());
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
@@ -74,16 +87,8 @@ int main() {
 		windowMesh.draw();
 		// ----- Draw objects -----
 		for (Bullet& bullet : bulletVector) {
-			bullet.update(deltaTime);
 			bullet.draw(camera);
 		}
-		bulletVector.erase(std::remove_if(
-				bulletVector.begin(), 
-				bulletVector.end(), 
-				[](const Bullet& bullet) { return bullet.getShouldDelete(); }
-			), 
-			bulletVector.end()
-		);
 		player.draw(camera);
 		// ----- Draw foreground -----
 		fgShader.activate();

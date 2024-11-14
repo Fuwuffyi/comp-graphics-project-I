@@ -108,6 +108,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VertexArray.hpp">
@@ -185,6 +188,9 @@
     <ClInclude Include="Bullet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Asteroid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="baseVertShader.glsl">
@@ -212,6 +218,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="bullet_hermite.mesh">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="asteroid_hermite.mesh">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="asteroidVertShader.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
