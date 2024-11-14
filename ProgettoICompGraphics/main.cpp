@@ -102,11 +102,13 @@ int main() {
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 		camera.updateCameraMatrix();
 		// ----- Draw Background -----
-		bgShader.activate();
-		glUniform1f(bgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
-		glUniform1f(bgShader.getUniformLocation("invAspectRatio"), camera.getInvAspectRatio());
-		glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
-		windowMesh.draw();
+		if (gui.getDrawBg()) {
+			bgShader.activate();
+			glUniform1f(bgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
+			glUniform1f(bgShader.getUniformLocation("invAspectRatio"), camera.getInvAspectRatio());
+			glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
+			windowMesh.draw();
+		}
 		// ----- Draw objects -----
 		for (const Bullet& bullet : bulletVector) {
 			bullet.draw(camera);
@@ -116,9 +118,11 @@ int main() {
 		}
 		player.draw(camera);
 		// ----- Draw foreground -----
-		fgShader.activate();
-		glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
-		windowMesh.draw();
+		if (gui.getDrawFg()) {
+			fgShader.activate();
+			glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
+			windowMesh.draw();
+		}
 		// ----- Render GUI -----
 		gui.render();
 		// Swap buffers and poll events
