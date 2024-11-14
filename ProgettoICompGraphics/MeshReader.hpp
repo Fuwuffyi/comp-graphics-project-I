@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "Mesh.hpp"
-#include "HermiteMesh.hpp"
+class Mesh;
+class HermiteMesh;
 
 namespace MeshReader {
     Mesh loadBasicMesh(const std::string& filename, const uint32_t renderType);

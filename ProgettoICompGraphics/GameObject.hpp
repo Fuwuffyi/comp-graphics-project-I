@@ -2,10 +2,10 @@
 
 #include <glm/glm.hpp>
 
-#include <memory>
-
-#include "Mesh.hpp"
-#include "Shader.hpp"
+class Camera;
+class Shader;
+class Mesh;
+class BoundingBox;
 
 class GameObject {
 protected:

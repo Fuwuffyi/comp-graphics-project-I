@@ -1,6 +1,5 @@
 #include "PhysicsGameObject.hpp"
 
-
 PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos, const float _mass, const glm::vec2& startAccel, const float startRotAccel, const float _maxSpeed, const float _maxRotSpeed, const float _fric, const float _rotFric)
 :
 	GameObject(_mesh, _shader, pos),
@@ -48,7 +47,6 @@ PhysicsGameObject::PhysicsGameObject(const Mesh* _mesh, const Shader* _shader, c
 	fric(_fric),
 	rotFric(_rotFric)
 {}
-
 
 void PhysicsGameObject::setAcceleration(const glm::vec2& newAccel) {
 	this->acceleration = newAccel;

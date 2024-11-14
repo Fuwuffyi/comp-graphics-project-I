@@ -1,9 +1,10 @@
 #pragma once
 
 #include "SimpleBuffer.hpp"
-#include "Vertex.hpp"
 
 #include <vector>
+
+struct Vertex;
 
 class VertexBuffer : public SimpleBuffer {
 public:

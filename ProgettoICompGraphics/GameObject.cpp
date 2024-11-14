@@ -1,7 +1,11 @@
 #include "GameObject.hpp"
 
-#include <glad/glad.h>
+#include "Camera.hpp"
+#include "Shader.hpp"
+#include "Mesh.hpp"
+#include "BoundingBox.hpp"
 
+#include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
 GameObject::GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2& pos)

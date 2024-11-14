@@ -3,8 +3,6 @@
 #include "PhysicsGameObject.hpp"
 #include "IUpdatableObject.hpp"
 
-// Asteroid scale goes from: 3.0f
-
 class Asteroid : public PhysicsGameObject, IUpdatableObject {
 public:
 	static constexpr float MAX_SCALE = 0.3f;

@@ -1,8 +1,7 @@
 #include "HermiteMesh.hpp"
+#include "Vertex.hpp"
 
 #include <glad/glad.h>
-
-#include <iostream>
 
 HermiteMesh::HermiteMesh(const std::vector<HermiteControlPoint>& controlPoints, const uint32_t steps, const bool filled)
 :

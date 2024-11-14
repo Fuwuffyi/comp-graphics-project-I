@@ -1,9 +1,7 @@
 #include "Camera.hpp"
 
-#include <math.h>
+#include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
-
-#include <iostream>
 
 Camera::Camera(const glm::vec2& _position, const float _invAspectRatio)
 	:

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Camera.hpp"
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include "ElementBuffer.hpp"

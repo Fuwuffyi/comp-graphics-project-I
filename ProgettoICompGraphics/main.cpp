@@ -1,3 +1,6 @@
+#include "Shader.hpp"
+#include "Mesh.hpp"
+#include "HermiteMesh.hpp"
 #include "Window.hpp"
 #include "Camera.hpp"
 #include "MeshReader.hpp"

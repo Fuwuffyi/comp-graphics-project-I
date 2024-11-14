@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <fstream>
 #include <memory>
-
 #include <iostream>
 
 std::string Shader::readShaderSource(const std::string& shaderFile) {

@@ -1,10 +1,12 @@
 #include "MeshReader.hpp"
 
+#include "Mesh.hpp"
+#include "HermiteMesh.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <string>
-#include <iostream>
 
 namespace MeshReader{
     Mesh loadBasicMesh(const std::string& filename, const uint32_t renderType) {
