@@ -51,5 +51,5 @@ public:
 
 	BoundingBox getBoundingBox() const;
 
-	void draw(const Camera& cam);
+	void draw(const Camera& cam) const;
 };

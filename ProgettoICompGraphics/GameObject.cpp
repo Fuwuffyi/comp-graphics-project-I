@@ -34,6 +34,7 @@ GameObject::GameObject(const Mesh* _mesh, const Shader* _shader, const glm::vec2
 	this->updateTranslationMatrix();
 	this->updateRotationMatrix();
 	this->updateScaleMatrix();
+	this->updateObjectMatrix();
 }
 
 const glm::vec2& GameObject::getPosition() const {
@@ -102,7 +103,7 @@ BoundingBox GameObject::getBoundingBox() const {
 	return this->mesh->getBoundingBox().transform(this->matObj);
 }
 
-void GameObject::draw(const Camera& cam) {
+void GameObject::draw(const Camera& cam) const {
 	this->shader->activate();
 	glUniformMatrix4fv(this->shader->getUniformLocation("objMatrix"), 1, GL_FALSE, glm::value_ptr(this->matObj));
 	glUniformMatrix4fv(this->shader->getUniformLocation("camMatrix"), 1, GL_FALSE, glm::value_ptr(cam.getCameraMatrix()));

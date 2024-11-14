@@ -68,25 +68,29 @@ int main() {
 		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
 			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
 		}
-		// ----- Asteroid Update stuff -----
-		for (Asteroid& asteroid : asteroidVector) {
-			asteroid.update(deltaTime);
-		}
 		// ----- Bullet Update stuff -----
-		for (Bullet& bullet : bulletVector) {
+		for (uint32_t i = bulletVector.size(); i > 0; --i) {
+			Bullet& bullet = bulletVector[i - 1];
 			bullet.update(deltaTime);
+			if (bullet.getShouldDelete()) {
+				bulletVector.erase(bulletVector.begin() + (i - 1));
+			}
 		}
-		// ----- Check bullet asteroid collisions -----
-		for (Bullet& bullet : bulletVector) {
-			bullet.update(deltaTime);
+		// ----- Asteroid Update stuff -----
+		for (uint32_t i = asteroidVector.size(); i > 0; --i) {
+			Asteroid& asteroid = asteroidVector[i - 1];
+			asteroid.update(deltaTime);
+			for (uint32_t j = bulletVector.size(); j > 0; --j) {
+				const Bullet& bullet = bulletVector[j - 1];
+				if (asteroid.getBoundingBox().checkCollisions(bullet.getBoundingBox())) {
+					const glm::vec2 newScale = asteroid.getScale() / 2.0f;
+					bulletVector.erase(bulletVector.begin() + (j - 1));
+					asteroidVector.erase(asteroidVector.begin() + (i - 1));
+					asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
+					asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
+				}
+			}
 		}
-		// Delete bullets that were marked for deletion
-		bulletVector.erase(std::remove_if(
-			bulletVector.begin(),
-			bulletVector.end(),
-			[](const Bullet& bullet) { return bullet.getShouldDelete(); }),
-			bulletVector.end()
-		);
 		// Update camera
 		camera.setPosition(player.getPosition());
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
@@ -98,10 +102,10 @@ int main() {
 		glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
 		windowMesh.draw();
 		// ----- Draw objects -----
-		for (Bullet& bullet : bulletVector) {
+		for (const Bullet& bullet : bulletVector) {
 			bullet.draw(camera);
 		}
-		for (Asteroid& asteroid : asteroidVector) {
+		for (const Asteroid& asteroid : asteroidVector) {
 			asteroid.draw(camera);
 		}
 		player.draw(camera);
