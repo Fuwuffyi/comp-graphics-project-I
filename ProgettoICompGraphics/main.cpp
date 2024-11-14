@@ -50,8 +50,9 @@ int main() {
 	std::vector<Bullet> bulletVector;
 	std::vector<Asteroid> asteroidVector;
 	for (uint32_t i = 0; i < 2; ++i) {
-		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(0.1f), glm::vec2(0.0f));
+		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(Asteroid::MAX_SCALE), glm::vec2(0.0f));
 	}
+	gui.setAsteroidsRemaining(asteroidVector.size());
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -88,11 +89,17 @@ int main() {
 			for (uint32_t j = bulletVector.size(); j > 0; --j) {
 				const Bullet& bullet = bulletVector[j - 1];
 				if (asteroid.getBoundingBox().checkCollisions(bullet.getBoundingBox())) {
-					const glm::vec2 newScale = asteroid.getScale() / 2.0f;
+					const float origScale = asteroid.getScale().x;
+					const glm::vec2 newScale = glm::vec2(origScale) * 0.5f;
 					bulletVector.erase(bulletVector.begin() + (j - 1));
 					asteroidVector.erase(asteroidVector.begin() + (i - 1));
-					asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
-					asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
+					std::cout << newScale.x << std::endl;
+					if (newScale.x > Asteroid::MIN_SCALE) {
+						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
+						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
+					}
+					gui.setAsteroidsRemaining(asteroidVector.size());
+					gui.addScore(static_cast<uint32_t>((origScale / Asteroid::MAX_SCALE) * Asteroid::MAX_SCORE));
 					break;
 				}
 			}

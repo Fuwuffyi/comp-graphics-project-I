@@ -29,6 +29,7 @@ public:
 	uint16_t getLevel() const;
 	uint16_t getAsteroidsRemaining() const;
 	void setScore(const uint32_t _score);
+	void addScore(const uint32_t _score);
 	void setLevel(const uint16_t _level);
 	void setAsteroidsRemaining(const uint16_t _asteroidsRemaining);
 };

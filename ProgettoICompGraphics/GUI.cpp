@@ -87,6 +87,10 @@ void GUI::setScore(const uint32_t _score) {
 	this->score = _score;
 }
 
+void GUI::addScore(const uint32_t _score) {
+	this->score += _score;
+}
+
 void GUI::setLevel(const uint16_t _level) {
 	this->level = _level;
 }
