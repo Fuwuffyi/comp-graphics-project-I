@@ -8,14 +8,16 @@
 class BoundingBox {
 private:
 	/*
-	* Contains the vertices of the bounding box for ease of 
-	* use with objects that are transformed by matrices.
+	* Contains the max/min values of the coordinates
+	* minX
+	* maxX
+	* minY
+	* maxY
 	*/
-	std::array<glm::vec2, 4> boxVerts;
+	std::array<float, 4> maxMinValues;
 
 public:
 	BoundingBox(const std::vector<Vertex>& vertices);
-	BoundingBox(const std::array<glm::vec2, 4> _boxVerts);
 
 	BoundingBox transform(const glm::mat4& transformationMatrix) const;
 
