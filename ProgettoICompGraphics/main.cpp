@@ -55,7 +55,7 @@ int main() {
 	for (uint32_t i = 0; i < 2; ++i) {
 		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(Asteroid::MAX_SCALE), glm::vec2(0.0f));
 	}
-	gui.setAsteroidsRemaining(asteroidVector.size());
+	gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -78,7 +78,7 @@ int main() {
 			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
 		}
 		// ----- Bullet Update stuff -----
-		for (uint32_t i = bulletVector.size(); i > 0; --i) {
+		for (uint32_t i = static_cast<uint32_t>(bulletVector.size()); i > 0; --i) {
 			Bullet& bullet = bulletVector[i - 1];
 			bullet.update(deltaTime);
 			if (bullet.getShouldDelete()) {
@@ -86,22 +86,21 @@ int main() {
 			}
 		}
 		// ----- Asteroid Update stuff -----
-		for (uint32_t i = asteroidVector.size(); i > 0; --i) {
+		for (uint32_t i = static_cast<uint32_t>(asteroidVector.size()); i > 0; --i) {
 			Asteroid& asteroid = asteroidVector[i - 1];
 			asteroid.update(deltaTime);
-			for (uint32_t j = bulletVector.size(); j > 0; --j) {
+			for (uint32_t j = static_cast<uint32_t>(bulletVector.size()); j > 0; --j) {
 				const Bullet& bullet = bulletVector[j - 1];
 				if (asteroid.getBoundingBox().checkCollisions(bullet.getBoundingBox())) {
 					const float origScale = asteroid.getScale().x;
 					const glm::vec2 newScale = glm::vec2(origScale) * 0.5f;
 					bulletVector.erase(bulletVector.begin() + (j - 1));
 					asteroidVector.erase(asteroidVector.begin() + (i - 1));
-					std::cout << newScale.x << std::endl;
 					if (newScale.x > Asteroid::MIN_SCALE) {
 						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
 						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
 					}
-					gui.setAsteroidsRemaining(asteroidVector.size());
+					gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 					gui.addScore(static_cast<uint32_t>((origScale / Asteroid::MAX_SCALE) * Asteroid::MAX_SCORE));
 					break;
 				}
