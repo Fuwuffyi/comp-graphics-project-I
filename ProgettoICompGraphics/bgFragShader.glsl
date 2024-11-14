@@ -8,10 +8,10 @@ uniform float timer;
 uniform vec2 cameraPos;
 
 // ----- STAR BACKGROUND -----
-#define iterations 15
+#define iterations 12
 #define formuparam 0.53
 
-#define volsteps 20
+#define volsteps 12
 #define stepsize 0.1
 
 #define tile 0.850
@@ -50,7 +50,7 @@ vec3 backgroundStars(vec3 from, vec3 dir) {
 
 // ----- RAYMARCHED PLANETS -----
 
-#define STEP_COUNT 100
+#define STEP_COUNT 30
 #define MIN_DST .001
 #define MAX_DST 500.
 
@@ -87,15 +87,16 @@ float scene(vec3 ray) {
     return min(sun, min(planet1, planet2));
 }
 
-float rayMarch(vec3 rayOrigin, vec3 rayDir) {
+vec2 rayMarch(vec3 rayOrigin, vec3 rayDir) {
     float dO = 0.;
-    for(int i = 0; i < STEP_COUNT; ++i) {
+    int i = 0;
+    for(; i < STEP_COUNT; ++i) {
     	vec3 p = rayOrigin + rayDir * dO;
         float dS = scene(p);
         dO += dS;
         if(dO > MAX_DST || abs(dS) < MIN_DST) break;
     }
-    return dO;
+    return vec2(dO, float(i));
 }
 
 vec3 calculateNormal(vec3 p) {
@@ -118,15 +119,19 @@ void main() {
     vec3 col = vec3(0.0);
     
     // Raymarch
-    float d = rayMarch(ro, rd);
-    if(d < MAX_DST) {
-        vec3 p = ro + rd * d;
+    vec2 d = rayMarch(ro, rd);
+    if(d.x < MAX_DST) {
+        vec3 p = ro + rd * d.x;
         vec3 n = calculateNormal(p);
         float dif = dot(n, normalize(vec3(0, .2, -1))) * .5 + .5;
         col = vec3(dif);
         col.rgb = pow(col.rgb, vec3(.4545));
     } else {
+        float bloomFac = d.y / STEP_COUNT;
         col = vec3(backgroundStars((ro / 100.) + vec3(1., .5 , 0.5), rd));
+        if (bloomFac > 0.5) {
+            col += vec3(0.0, 0.0, 1.0) * bloomFac;
+        }
     }
     // Gamma correction
     fragColor = vec4(col, 1.);

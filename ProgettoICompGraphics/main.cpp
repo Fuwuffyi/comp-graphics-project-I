@@ -33,8 +33,8 @@ int main() {
 	// Game camera
 	Camera camera(glm::vec2(-0.5f, -0.5f), static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 	// Create the shaders
-	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
-	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
+	const Shader bgShader("bgFragShader.glsl", "windowVertShader.glsl");
+	const Shader fgShader("fgFragShader.glsl", "windowVertShader.glsl");
 	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
 	const Shader asteroidShader("baseFragShader.glsl", "asteroidVertShader.glsl");
 	// Load meshes
@@ -73,6 +73,10 @@ int main() {
 			asteroid.update(deltaTime);
 		}
 		// ----- Bullet Update stuff -----
+		for (Bullet& bullet : bulletVector) {
+			bullet.update(deltaTime);
+		}
+		// ----- Check bullet asteroid collisions -----
 		for (Bullet& bullet : bulletVector) {
 			bullet.update(deltaTime);
 		}

@@ -9,15 +9,21 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Source Files\imgui">
       <UniqueIdentifier>{e7999de1-9e9a-48a6-90be-10fef62e0df3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\imgui">
       <UniqueIdentifier>{75c363c6-19a8-4b6d-ad1d-61aa6f13be1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\meshes">
+      <UniqueIdentifier>{9edff2ce-a668-4cf9-930f-e78f30e637bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{f5990595-a718-4ba7-a5ea-6593cdd90870}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -193,38 +199,35 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="baseVertShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="baseFragShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="fgVertShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="bgFragShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="bgVertShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="fgFragShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="window_mesh.mesh">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\meshes</Filter>
     </None>
     <None Include="player_hermite.mesh">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\meshes</Filter>
     </None>
     <None Include="bullet_hermite.mesh">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\meshes</Filter>
     </None>
     <None Include="asteroid_hermite.mesh">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="fgFragShader.glsl">
+      <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="asteroidVertShader.glsl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="baseFragShader.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="baseVertShader.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="bgFragShader.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="windowVertShader.glsl">
+      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
