@@ -73,7 +73,7 @@ void PhysicsGameObject::applyRotationalForce(const float force) {
 }
 
 glm::vec2 PhysicsGameObject::getHeadingVec() const {
-	const glm::vec4 rotationDir = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f) * this->getRotationMatrix();
+	const glm::vec4 rotationDir = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) * this->getRotationMatrix();
 	return glm::vec2(rotationDir.x, -rotationDir.y);
 }
 
