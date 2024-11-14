@@ -15,4 +15,9 @@ private:
 
 public:
 	BoundingBox(const std::vector<Vertex>& vertices);
+	BoundingBox(const std::array<glm::vec2, 4> _boxVerts);
+
+	BoundingBox transform(const glm::mat4& transformationMatrix) const;
+
+	bool checkCollisions(const BoundingBox& other) const;
 };

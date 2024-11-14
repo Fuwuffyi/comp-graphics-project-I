@@ -49,5 +49,7 @@ public:
 	void setScale(const glm::vec2& scale);
 	void changeScale(const glm::vec2& offset);
 
+	BoundingBox getBoundingBox() const;
+
 	void draw(const Camera& cam);
 };

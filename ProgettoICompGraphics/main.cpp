@@ -45,6 +45,10 @@ int main() {
 	// Create game objects
 	Player player(&playerMesh, &baseShader);
 	std::vector<Bullet> bulletVector;
+	std::vector<Asteroid> asteroidVector;
+	for (uint32_t i = 0; i < 20; ++i) {
+		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(0.1f), glm::vec2(0.0f));
+	}
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -63,6 +67,10 @@ int main() {
 		player.update(deltaTime);
 		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
 			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
+		}
+		// ----- Asteroid Update stuff -----
+		for (Asteroid& asteroid : asteroidVector) {
+			asteroid.update(deltaTime);
 		}
 		// ----- Bullet Update stuff -----
 		for (Bullet& bullet : bulletVector) {
@@ -88,6 +96,9 @@ int main() {
 		// ----- Draw objects -----
 		for (Bullet& bullet : bulletVector) {
 			bullet.draw(camera);
+		}
+		for (Asteroid& asteroid : asteroidVector) {
+			asteroid.draw(camera);
 		}
 		player.draw(camera);
 		// ----- Draw foreground -----
