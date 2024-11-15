@@ -10,51 +10,57 @@ uniform float timer;
 uniform vec2 cameraPos;
 
 // ----- STAR BACKGROUND -----
-#define iterations 12
-#define formuparam 0.53
+#define ITERATIONS 12
+#define FORMUPARAM 0.53
 
-#define volsteps 12
-#define stepsize 0.1
+#define VOLSTEPS 12
+#define STEPSIZE 0.1
 
-#define tile 0.850
+#define TILE 0.850
 
-#define brightness 0.0015
-#define darkmatter 0.300
-#define distfading 0.730
-#define saturation 0.850
+#define BRIGHTNESS 0.0015
+#define DARKMATTER 0.300
+#define DISTFADING 0.730
+#define SATURATION 0.850
 
 vec3 backgroundStars(vec3 from, vec3 dir) {
-	//volumetric rendering
-	float s = 0.1, fade = 1.;
-	vec3 v = vec3(0.);
-	for (int r = 0; r < volsteps; ++r) {
-		vec3 p = from + s * dir * .5;
-		p = abs(vec3(tile) - mod(p, vec3(tile * 2.))); // tiling fold
-		float pa, a = pa = 0.;
-		for (int i = 0; i < iterations; ++i) { 
-			p = abs(p) / dot(p, p) - formuparam; // the magic formula
-			a += abs(length(p) - pa); // absolute sum of average change
-			pa = length(p);
-		}
-		float dm = max(0., darkmatter - a * a * .001); //dark matter
+    // Volumetric star rendering
+    const vec3 tileVec = vec3(TILE);
+    const vec3 tileVec2 = vec3(TILE * 2.0);
+    float s = 0.1;
+    float fade = 1.0;
+	vec3 v = vec3(0.0);
+	for (int r = 0; r < VOLSTEPS; ++r) {
+		vec3 p = from + s * dir * 0.5;
+		p = abs(tileVec - mod(p, tileVec2)); // tiling fold
+        float pa;
+        float a = pa = 0.0;
+        for (int i = 0; i < ITERATIONS; ++i) {
+            float lenP = length(p);
+            a += abs(lenP - pa); // Sum of the change in length
+            pa = lenP;
+            p = abs(p) / (dot(p, p) + 1e-6) - FORMUPARAM;
+        }
+		float dm = max(0.0, DARKMATTER - a * a * 0.001); //dark matter
 		a *= a * a; // add contrast
 		if (r > 6) {
-            fade *= 1. - dm; // dark matter, don't render near
+            fade *= 1.0 - dm; // dark matter, don't render near
         }
 		v += fade;
-		v += vec3(s, s * s, s * s * s * s) * a * brightness * fade; // coloring based on distance
-		fade *= distfading; // distance fading
-		s += stepsize;
+		v += vec3(s, s * s, s * s * s * s) * a * BRIGHTNESS * fade; // coloring based on distance
+		fade *= DISTFADING; // distance fading
+		s += STEPSIZE;
 	}
-	v = mix(vec3(length(v)),v,saturation); //color adjust
-    return v * .01;
+    // Color adjust
+	v = mix(vec3(length(v)), v, SATURATION);
+    return v * 0.01;
 }
 
 // ----- RAYMARCHED PLANETS -----
 
 #define STEP_COUNT 30
-#define MIN_DST .001
-#define MAX_DST 500.
+#define MIN_DST .01
+#define MAX_DST 250.
 
 float sphereDst(vec3 ray, vec3 pos, float size) {
     return length(ray - pos) - size;
