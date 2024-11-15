@@ -118,7 +118,7 @@ vec3 calculateNormal(vec3 p) {
 
 // ----- MAIN -----
 
-#define DISTORTION_RADIUS 1.0
+#define DISTORTION_RADIUS_PERC 0.2
 
 void main() {
     vec2 trueUv = uv * 2. - 1.;
@@ -129,10 +129,10 @@ void main() {
 
     // Black hole distortion
     float dstFromCenter = length(worldPos);
-    vec3 distortionColor = vec3(1.0);
-    if (dstFromCenter > worldSize - DISTORTION_RADIUS) {
-        float dstFactor = smoothstep(DISTORTION_RADIUS / 2.0, -DISTORTION_RADIUS / 2.0, dstFromCenter - worldSize);
-        if (dstFactor <= DISTORTION_RADIUS / 2.0) {
+    float distorsionRadius = worldSize * DISTORTION_RADIUS_PERC;
+    if (dstFromCenter >= worldSize - distorsionRadius) {
+        float dstFactor = smoothstep(distorsionRadius, -distorsionRadius, dstFromCenter - worldSize);
+        if (dstFromCenter > worldSize) {
             rd *= 1 - dstFactor;
             ro = -ro;
         } else {
@@ -151,5 +151,5 @@ void main() {
     } else {
         col = vec3(backgroundStars((ro / 100.) + vec3(1., .5 , 0.5), rd));
     }
-    fragColor = vec4(col * distortionColor, 1.0);
+    fragColor = vec4(col, 1.0);
 }
