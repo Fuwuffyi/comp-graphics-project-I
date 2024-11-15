@@ -15,7 +15,7 @@ void Bullet::update(const float deltaTime) {
 	}
 	timer += deltaTime;
 	// After 10 seconds mark for deletion
-	if (timer > 5.0f) {
+	if (timer > GameSettings::BULLET_DESPAWN_TIMER) {
 		this->shouldDelete = true;
 	}
 }
