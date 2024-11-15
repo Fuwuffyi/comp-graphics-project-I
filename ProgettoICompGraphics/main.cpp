@@ -39,8 +39,8 @@ int main() {
 	// Game camera
 	Camera camera(glm::vec2(-0.5f, -0.5f), static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 	// Create the shaders
-	const Shader bgShader("bgFragShader.glsl", "windowVertShader.glsl");
-	const Shader fgShader("fgFragShader.glsl", "windowVertShader.glsl");
+	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
+	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
 	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
 	const Shader asteroidShader("baseFragShader.glsl", "asteroidVertShader.glsl");
 	// Load meshes
@@ -53,7 +53,7 @@ int main() {
 	std::vector<Bullet> bulletVector;
 	std::vector<Asteroid> asteroidVector;
 	for (uint32_t i = 0; i < 2; ++i) {
-		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(Asteroid::MAX_SCALE), glm::vec2(0.0f));
+		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(Asteroid::MAX_SCALE));
 	}
 	gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 	// Enable blending
@@ -74,6 +74,10 @@ int main() {
 		gui.newFrame();
 		// ----- Player Update stuff -----
 		player.update(deltaTime);
+		std::cout << glm::length(player.getPosition()) << std::endl;
+		if (glm::length(player.getPosition()) > 5.0f) {
+			player.setPosition(-player.getPosition());
+		}
 		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
 			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
 		}
@@ -89,17 +93,20 @@ int main() {
 		for (uint32_t i = static_cast<uint32_t>(asteroidVector.size()); i > 0; --i) {
 			Asteroid& asteroid = asteroidVector[i - 1];
 			asteroid.update(deltaTime);
+			if (glm::length(asteroid.getPosition()) > 5.0f) {
+				asteroid.setPosition(-asteroid.getPosition());
+			}
 			for (uint32_t j = static_cast<uint32_t>(bulletVector.size()); j > 0; --j) {
 				const Bullet& bullet = bulletVector[j - 1];
 				if (asteroid.getBoundingBox().checkCollisions(bullet.getBoundingBox())) {
 					const float origScale = asteroid.getScale().x;
 					const glm::vec2 newScale = glm::vec2(origScale) * 0.5f;
+					if (newScale.x > Asteroid::MIN_SCALE) {
+						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, asteroid.getPosition(), newScale);
+						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, asteroid.getPosition(), newScale);
+					}
 					bulletVector.erase(bulletVector.begin() + (j - 1));
 					asteroidVector.erase(asteroidVector.begin() + (i - 1));
-					if (newScale.x > Asteroid::MIN_SCALE) {
-						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
-						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), newScale, glm::vec2(0.0f));
-					}
 					gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 					gui.addScore(static_cast<uint32_t>((origScale / Asteroid::MAX_SCALE) * Asteroid::MAX_SCORE));
 					break;
@@ -129,6 +136,7 @@ int main() {
 		// ----- Draw foreground -----
 		if (gui.getDrawFg()) {
 			fgShader.activate();
+			glUniform2f(fgShader.getUniformLocation("playerPos"), player.getPosition().x, player.getPosition().y);
 			glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
 			windowMesh.draw();
 		}

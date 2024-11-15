@@ -9,7 +9,7 @@ public:
 	static constexpr float MIN_SCALE = 0.0375f;
 	static constexpr float MAX_SCORE = 100.0f;
 public:
-	Asteroid(const Mesh* _mesh, const Shader* _shader, const glm::vec2& startPos, const glm::vec2& startScale, const glm::vec2& startAccel);
+	Asteroid(const Mesh* _mesh, const Shader* _shader, const glm::vec2& startPos, const glm::vec2& startScale);
 
 	void update(const float deltaTime) override;
 };

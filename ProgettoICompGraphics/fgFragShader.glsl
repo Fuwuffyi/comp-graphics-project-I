@@ -3,6 +3,7 @@
 out vec4 fragColor;
 
 in vec2 uv;
+in vec2 worldPos;
 
 uniform float timer;
 
@@ -24,6 +25,11 @@ void main() {
     vec3 col = vec3(1.0);
     drawVignette(col, uv);
     drawScanlines(col, uv);
-    // Invert color so it's mostly black
-	fragColor = vec4(vec3(1.0) - col, 0.2);
+    vec4 scanlineCol = vec4(vec3(1.0) - col, 0.2);
+
+    float dstFromCenter = length(worldPos);
+    if (dstFromCenter > 4.9) {
+        scanlineCol += vec4(vec3(0.0), ((dstFromCenter - 4.9) / 0.1));
+    }
+	fragColor = scanlineCol;
 }

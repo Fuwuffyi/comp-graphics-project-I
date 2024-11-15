@@ -229,11 +229,14 @@
     <None Include="bgFragShader.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="windowVertShader.glsl">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="GUI.hpp">
       <Filter>Header Files</Filter>
+    </None>
+    <None Include="bgVertShader.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="fgVertShader.glsl">
+      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
