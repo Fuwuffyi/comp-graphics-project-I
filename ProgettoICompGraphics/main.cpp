@@ -98,12 +98,13 @@ int main() {
 				if (asteroid.getBoundingBox().checkCollisions(bullet.getBoundingBox())) {
 					const float origScale = asteroid.getScale().x;
 					const glm::vec2 newScale = glm::vec2(origScale) * 0.5f;
-					if (newScale.x > GameSettings::ASTEROID_MIN_SCALE) {
-						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, asteroid.getPosition(), newScale);
-						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, asteroid.getPosition(), newScale);
-					}
+					const glm::vec2 newPos = asteroid.getPosition();
 					bulletVector.erase(bulletVector.begin() + (j - 1));
 					asteroidVector.erase(asteroidVector.begin() + (i - 1));
+					if (newScale.x > GameSettings::ASTEROID_MIN_SCALE) {
+						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, newPos, newScale);
+						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, newPos, newScale);
+					}
 					gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 					gui.addScore(static_cast<uint32_t>((origScale / GameSettings::ASTEROID_MAX_SCALE) * GameSettings::ASTEROID_MAX_SCORE));
 					break;
