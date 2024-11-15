@@ -89,16 +89,15 @@ float scene(vec3 ray) {
     return min(sun, min(planet1, planet2));
 }
 
-vec2 rayMarch(vec3 rayOrigin, vec3 rayDir) {
+float rayMarch(vec3 rayOrigin, vec3 rayDir) {
     float dO = 0.;
-    int i = 0;
-    for(; i < STEP_COUNT; ++i) {
+    for(int i = 0; i < STEP_COUNT; ++i) {
     	vec3 p = rayOrigin + rayDir * dO;
         float dS = scene(p);
         dO += dS;
         if(dO > MAX_DST || abs(dS) < MIN_DST) break;
     }
-    return vec2(dO, float(i));
+    return dO;
 }
 
 vec3 calculateNormal(vec3 p) {
@@ -136,21 +135,15 @@ void main() {
     }
     
     // Raymarch
-    vec2 d = rayMarch(ro, rd);
-    if(d.x < MAX_DST) {
-        vec3 p = ro + rd * d.x;
+    float d = rayMarch(ro, rd);
+    if(d < MAX_DST) {
+        vec3 p = ro + rd * d;
         vec3 n = calculateNormal(p);
         float dif = dot(n, normalize(vec3(0, .2, -1))) * .5 + .5;
         col = vec3(dif);
         col.rgb = pow(col.rgb, vec3(.4545));
     } else {
-        // Background stars
-        float bloomFac = d.y / STEP_COUNT;
         col = vec3(backgroundStars((ro / 100.) + vec3(1., .5 , 0.5), rd));
-        // Planet atmosphere
-        if (bloomFac > 0.5) {
-            col += vec3(0.0, 0.0, 1.0) * bloomFac;
-        }
     }
     fragColor = vec4(col * distortionColor, 1.0);
 }
