@@ -47,10 +47,14 @@ glm::vec2 HermiteMesh::calculateTangent(const std::vector<HermiteControlPoint>& 
 
 std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<HermiteControlPoint>& controlPoints, const uint32_t steps, const bool filled) {
     std::vector<Vertex> vertices(controlPoints.size() * steps + 1 + filled); // Preallocate memory
+    // If filled shape, use first point as center
+    if (filled) {
+        vertices[0] = controlPoints[0].vert;
+    }
     // Iterate through control points in pairs
-    for (uint32_t i = 0; i < controlPoints.size(); ++i) {
+    for (uint32_t i = filled; i < controlPoints.size(); ++i) {
         const uint32_t index0 = i;
-        const uint32_t index1 = (i + 1) % controlPoints.size();
+        const uint32_t index1 = i == controlPoints.size() - 1 ? filled : i + 1;
         const HermiteControlPoint& p0 = controlPoints[index0];
         const HermiteControlPoint& p1 = controlPoints[index1];
         // Calculate tangent for p0 and p1
@@ -71,9 +75,6 @@ std::vector<Vertex> HermiteMesh::calculateHermiteVertices(const std::vector<Herm
             // Add the new vertex to the result
             vertices[currentIndex + filled] = Vertex{ glm::vec2(x, y), j < steps / 2 ? controlPoints[index0].vert.color : controlPoints[index1].vert.color };
         }
-    }
-    if (filled) {
-        vertices[0] = Vertex{ glm::vec2(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) };
     }
     return vertices;
 }
