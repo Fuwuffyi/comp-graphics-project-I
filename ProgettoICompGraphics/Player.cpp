@@ -1,5 +1,6 @@
 #include "Player.hpp"
 
+#include "GameSettings.hpp"
 #include "Keyboard.hpp"
 
 Player::Player(const Mesh* _mesh, const Shader* _shader) 
@@ -21,4 +22,7 @@ void Player::update(const float deltaTime) {
 		this->applyForce(this->getHeadingVec() * -0.1f);
 	}
 	this->tickPhysics(deltaTime);
+	if (glm::length(this->getPosition()) > GameSettings::WORLD_SIZE) {
+		this->setPosition(-this->getPosition());
+	}
 }

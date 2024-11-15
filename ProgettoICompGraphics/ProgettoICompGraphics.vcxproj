@@ -177,6 +177,7 @@
     <ClInclude Include="Bullet.hpp" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="GameSettings.hpp" />
     <ClInclude Include="HermiteMesh.hpp" />
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="Mesh.hpp" />

@@ -9,6 +9,7 @@
 #include "Asteroid.hpp"
 #include "Player.hpp"
 #include "Bullet.hpp"
+#include "GameSettings.hpp"
 #include "GUI.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
@@ -53,9 +54,12 @@ int main() {
 	std::vector<Bullet> bulletVector;
 	std::vector<Asteroid> asteroidVector;
 	for (uint32_t i = 0; i < 2; ++i) {
-		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(Asteroid::MAX_SCALE));
+		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(GameSettings::ASTEROID_MAX_SCALE));
 	}
 	gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
+	// Set static uniforms
+	fgShader.activate();
+	glUniform1f(fgShader.getUniformLocation("worldSize"), GameSettings::WORLD_SIZE);
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -74,10 +78,6 @@ int main() {
 		gui.newFrame();
 		// ----- Player Update stuff -----
 		player.update(deltaTime);
-		std::cout << glm::length(player.getPosition()) << std::endl;
-		if (glm::length(player.getPosition()) > 5.0f) {
-			player.setPosition(-player.getPosition());
-		}
 		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
 			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
 		}
@@ -93,22 +93,19 @@ int main() {
 		for (uint32_t i = static_cast<uint32_t>(asteroidVector.size()); i > 0; --i) {
 			Asteroid& asteroid = asteroidVector[i - 1];
 			asteroid.update(deltaTime);
-			if (glm::length(asteroid.getPosition()) > 5.0f) {
-				asteroid.setPosition(-asteroid.getPosition());
-			}
 			for (uint32_t j = static_cast<uint32_t>(bulletVector.size()); j > 0; --j) {
 				const Bullet& bullet = bulletVector[j - 1];
 				if (asteroid.getBoundingBox().checkCollisions(bullet.getBoundingBox())) {
 					const float origScale = asteroid.getScale().x;
 					const glm::vec2 newScale = glm::vec2(origScale) * 0.5f;
-					if (newScale.x > Asteroid::MIN_SCALE) {
+					if (newScale.x > GameSettings::ASTEROID_MIN_SCALE) {
 						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, asteroid.getPosition(), newScale);
 						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, asteroid.getPosition(), newScale);
 					}
 					bulletVector.erase(bulletVector.begin() + (j - 1));
 					asteroidVector.erase(asteroidVector.begin() + (i - 1));
 					gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
-					gui.addScore(static_cast<uint32_t>((origScale / Asteroid::MAX_SCALE) * Asteroid::MAX_SCORE));
+					gui.addScore(static_cast<uint32_t>((origScale / GameSettings::ASTEROID_MAX_SCALE) * GameSettings::ASTEROID_MAX_SCORE));
 					break;
 				}
 			}

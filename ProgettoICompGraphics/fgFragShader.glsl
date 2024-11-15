@@ -5,6 +5,7 @@ out vec4 fragColor;
 in vec2 uv;
 in vec2 worldPos;
 
+uniform float worldSize;
 uniform float timer;
 
 // Slightly blurred borders
@@ -28,8 +29,8 @@ void main() {
     vec4 scanlineCol = vec4(vec3(1.0) - col, 0.2);
 
     float dstFromCenter = length(worldPos);
-    if (dstFromCenter > 4.9) {
-        scanlineCol += vec4(vec3(0.0), ((dstFromCenter - 4.9) / 0.1));
+    if (dstFromCenter > worldSize - 0.1) {
+        scanlineCol += vec4(vec3(0.0), ((dstFromCenter - worldSize) / 0.1));
     }
 	fragColor = scanlineCol;
 }
