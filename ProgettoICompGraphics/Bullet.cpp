@@ -1,4 +1,5 @@
 #include "Bullet.hpp"
+#include "GameSettings.hpp"
 
 Bullet::Bullet(const Mesh* _mesh, const Shader* _shader, const glm::vec2& _position, const float& _rotation, const glm::vec2& startingVelocity)
 :
@@ -9,6 +10,9 @@ Bullet::Bullet(const Mesh* _mesh, const Shader* _shader, const glm::vec2& _posit
 
 void Bullet::update(const float deltaTime) {
 	this->tickPhysics(deltaTime);
+	if (glm::length(this->getPosition()) > GameSettings::WORLD_SIZE) {
+		this->setPosition(-this->getPosition());
+	}
 	timer += deltaTime;
 	// After 10 seconds mark for deletion
 	if (timer > 5.0f) {

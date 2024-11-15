@@ -3,7 +3,9 @@
 out vec4 fragColor;
 
 in vec2 uv;
+in vec2 worldPos;
 
+uniform float worldSize;
 uniform float timer;
 uniform vec2 cameraPos;
 
@@ -111,12 +113,27 @@ vec3 calculateNormal(vec3 p) {
 
 // ----- MAIN -----
 
+#define DISTORTION_RADIUS 1.0
+
 void main() {
     vec2 trueUv = uv * 2. - 1.;
     // Initialization
     vec3 ro = vec3(cameraPos, 0.) * 10.0; // Camera position
     vec3 rd = normalize(vec3(trueUv, 1.0));
     vec3 col = vec3(0.0);
+
+    // Black hole distortion
+    float dstFromCenter = length(worldPos);
+    vec3 distortionColor = vec3(1.0);
+    if (dstFromCenter > worldSize - DISTORTION_RADIUS) {
+        float dstFactor = smoothstep(DISTORTION_RADIUS / 2.0, -DISTORTION_RADIUS / 2.0, dstFromCenter - worldSize);
+        if (dstFactor <= DISTORTION_RADIUS / 2.0) {
+            rd *= 1 - dstFactor;
+            ro = -ro;
+        } else {
+            rd *= dstFactor;
+        }
+    }
     
     // Raymarch
     vec2 d = rayMarch(ro, rd);
@@ -127,12 +144,13 @@ void main() {
         col = vec3(dif);
         col.rgb = pow(col.rgb, vec3(.4545));
     } else {
+        // Background stars
         float bloomFac = d.y / STEP_COUNT;
         col = vec3(backgroundStars((ro / 100.) + vec3(1., .5 , 0.5), rd));
+        // Planet atmosphere
         if (bloomFac > 0.5) {
             col += vec3(0.0, 0.0, 1.0) * bloomFac;
         }
     }
-    // Gamma correction
-    fragColor = vec4(col, 1.);
+    fragColor = vec4(col * distortionColor, 1.0);
 }

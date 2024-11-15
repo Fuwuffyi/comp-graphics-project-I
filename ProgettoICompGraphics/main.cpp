@@ -58,8 +58,8 @@ int main() {
 	}
 	gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 	// Set static uniforms
-	fgShader.activate();
-	glUniform1f(fgShader.getUniformLocation("worldSize"), GameSettings::WORLD_SIZE);
+	bgShader.activate();
+	glUniform1f(bgShader.getUniformLocation("worldSize"), GameSettings::WORLD_SIZE);
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -117,6 +117,7 @@ int main() {
 		// ----- Draw Background -----
 		if (gui.getDrawBg()) {
 			bgShader.activate();
+			glUniform2f(bgShader.getUniformLocation("playerPos"), player.getPosition().x, player.getPosition().y);
 			glUniform1f(bgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
 			glUniform1f(bgShader.getUniformLocation("invAspectRatio"), camera.getInvAspectRatio());
 			glUniform2f(bgShader.getUniformLocation("cameraPos"), camera.getPosition().x, camera.getPosition().y);
@@ -133,7 +134,6 @@ int main() {
 		// ----- Draw foreground -----
 		if (gui.getDrawFg()) {
 			fgShader.activate();
-			glUniform2f(fgShader.getUniformLocation("playerPos"), player.getPosition().x, player.getPosition().y);
 			glUniform1f(fgShader.getUniformLocation("timer"), static_cast<float>(glfwGetTime()));
 			windowMesh.draw();
 		}
