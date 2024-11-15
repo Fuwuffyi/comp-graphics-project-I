@@ -33,13 +33,10 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ElementBuffer.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ElementBuffer.cpp">
+    <ClCompile Include="SimpleBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleBuffer.cpp">
+    <ClCompile Include="ElementBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VertexArray.cpp">
@@ -99,14 +96,8 @@
     <ClCompile Include="MeshReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsGameObject.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsGameObject.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IUpdatableObject.hpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
@@ -122,6 +113,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PhysicsGameObject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IUpdatableObject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementBuffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="VertexArray.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
