@@ -23,6 +23,10 @@ private:
 	// FG Settings
 	const Shader* fgShader;
 	bool drawFg;
+	bool drawVignette;
+	bool drawScanlines;
+	float scanlineScale;
+	float transparency;
 
 	// Player UI
 	uint32_t score;
@@ -36,6 +40,7 @@ public:
 	void render();
 
 	void updateBg() const;
+	void updateFg() const;
 
 	// Config
 	bool getDrawBg() const;

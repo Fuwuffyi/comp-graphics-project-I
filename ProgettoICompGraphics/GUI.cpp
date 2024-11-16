@@ -26,6 +26,10 @@ GUI::GUI(GLFWwindow* window, const Shader* _bgShader, const Shader* _fgShader)
 
 	fgShader(_fgShader),
 	drawFg(true),
+	drawVignette(true),
+	drawScanlines(true),
+	scanlineScale(1.0f),
+	transparency(0.2f),
 
 	score(0),
 	level(1),
@@ -39,6 +43,7 @@ GUI::GUI(GLFWwindow* window, const Shader* _bgShader, const Shader* _fgShader)
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 	this->updateBg();
+	this->updateFg();
 }
 
 GUI::~GUI() {
@@ -79,6 +84,18 @@ void GUI::render() {
 	}
 	if (ImGui::CollapsingHeader("Foreground settings")) {
 		ImGui::Checkbox("Draw foreground", &this->drawFg);
+		if (ImGui::Checkbox("Draw vignette", &this->drawVignette)) {
+			this->updateFg();
+		}
+		if (ImGui::Checkbox("Draw scanlines", &this->drawScanlines)) {
+			this->updateFg();
+		}
+		if (ImGui::SliderFloat("Scanline scale", &this->scanlineScale, 1.0f, 5.0f)) {
+			this->updateFg();
+		}
+		if (ImGui::SliderFloat("Transparency", &this->transparency, 0.0f, 1.0f)) {
+			this->updateFg();
+		}
 	}
 	ImGui::End();
 	// Scoring window setup
@@ -101,6 +118,14 @@ void GUI::updateBg() const {
 	glUniform1ui(this->bgShader->getUniformLocation("starIterations"), this->starIterations);
 	glUniform1ui(this->bgShader->getUniformLocation("starVolumetricSteps"), this->starVolumetricSteps);
 	glUniform1f(this->bgShader->getUniformLocation("distortionRadiusPerc"), this->blackHoleRadius);
+}
+
+void GUI::updateFg() const {
+	this->fgShader->activate();
+	glUniform1ui(this->fgShader->getUniformLocation("bVignette"), this->drawVignette);
+	glUniform1ui(this->fgShader->getUniformLocation("bScanlines"), this->drawScanlines);
+	glUniform1f(this->fgShader->getUniformLocation("scanlineScale"), this->scanlineScale);
+	glUniform1f(this->fgShader->getUniformLocation("transparency"), this->transparency);
 }
 
 bool GUI::getDrawBg() const {

@@ -6,6 +6,11 @@ in vec2 uv;
 
 uniform float timer;
 
+uniform uint bVignette;
+uniform uint bScanlines;
+uniform float scanlineScale;
+uniform float transparency;
+
 // Slightly blurred borders
 void drawVignette(inout vec3 color, vec2 uv) {    
     float vignette = uv.x * uv.y * (1.0 - uv.x) * (1.0 - uv.y);
@@ -22,8 +27,12 @@ void drawScanlines(inout vec3 color, vec2 uv) {
 
 void main() {
     vec3 col = vec3(1.0);
-    drawVignette(col, uv);
-    drawScanlines(col, uv);
-    vec4 scanlineCol = vec4(vec3(1.0) - col, 0.2);
+    if (bVignette == 1u) {
+        drawVignette(col, uv);
+    }
+    if (bScanlines == 1u) {
+        drawScanlines(col, uv * scanlineScale);
+    }
+    vec4 scanlineCol = vec4(1.0 - col, transparency);
 	fragColor = scanlineCol;
 }
