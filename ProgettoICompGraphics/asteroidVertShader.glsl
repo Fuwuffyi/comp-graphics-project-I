@@ -7,8 +7,10 @@ out vec4 color;
 
 uniform mat4 objMatrix;
 uniform mat4 camMatrix;
+uniform uint uuid;
 
 void main() {
+    // TODO: Use UUID to make the asteroid look more like an asteroid
     vec2 pos = (length(aPos) == 0.0) ? vec2(0.0) : normalize(aPos);
     gl_Position = camMatrix * objMatrix * vec4(pos, 0.0, 1.0);
     color = aCol;

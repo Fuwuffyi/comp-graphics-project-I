@@ -54,7 +54,7 @@ int main() {
 	std::vector<Bullet> bulletVector;
 	std::vector<Asteroid> asteroidVector;
 	for (uint32_t i = 0; i < 2; ++i) {
-		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(0.0f), glm::vec2(GameSettings::ASTEROID_MAX_SCALE));
+		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(GameSettings::ASTEROID_MAX_SCALE));
 	}
 	gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 	// Set static uniforms
