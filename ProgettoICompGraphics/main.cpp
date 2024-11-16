@@ -122,6 +122,7 @@ int main() {
 		}
 		// Update camera
 		camera.setPosition(player.getPosition());
+		camera.changePosition((glm::vec2(Mouse::getMouseX(), Mouse::getMouseY()) / glm::vec2(window.getWidth(), -static_cast<float>(window.getHeight())) - glm::vec2(0.5f, -0.5f)) * 0.2f);
 		camera.changeAspectRatio(static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 		camera.updateCameraMatrix();
 		// ----- Draw Background -----

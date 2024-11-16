@@ -25,8 +25,7 @@ Asteroid::Asteroid(const Mesh* _mesh, const Shader* _shader, const glm::vec2& st
 
 Asteroid::Asteroid(const Mesh* _mesh, const Shader* _shader, const glm::vec2 & startScale)
 	:
-	PhysicsGameObject(_mesh, _shader, glm::vec2(spawnDistribution(randomEngine), spawnDistribution(randomEngine)), startRotDist(randomEngine), startScale, 50.0f, glm::vec2(startAccel(randomEngine), startAccel(randomEngine)), rotAccel(randomEngine), 2.0f, 15.0f, 1.0f, 1.0f),
-	uuid(randomIdDistribution(randomEngine))
+	Asteroid(_mesh, _shader, glm::vec2(spawnDistribution(randomEngine), spawnDistribution(randomEngine)), startScale)
 {}
 
 void Asteroid::randomizePosition() {

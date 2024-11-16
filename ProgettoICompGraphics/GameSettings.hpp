@@ -1,5 +1,8 @@
 #pragma once
 
+/**
+ * Namespace that holds some important values for the game.
+ */
 namespace GameSettings {
 	constexpr float ASTEROID_MAX_SCALE = 0.3f;
 	constexpr float ASTEROID_MIN_SCALE = 0.0375f;
