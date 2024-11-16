@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Shader.hpp"
+
 static constexpr ImGuiWindowFlags configurationWindowFlags = ImGuiWindowFlags_AlwaysAutoResize;
 
 static constexpr ImGuiWindowFlags scoreWindowFlags =
@@ -11,10 +13,19 @@ static constexpr ImGuiWindowFlags scoreWindowFlags =
 	| ImGuiWindowFlags_AlwaysAutoResize
 	| ImGuiWindowFlags_NoTitleBar;
 
-GUI::GUI(GLFWwindow* window)
+GUI::GUI(GLFWwindow* window, const Shader* _bgShader, const Shader* _fgShader)
 :
-	drawFg(true),
+	bgShader(_bgShader),
 	drawBg(true),
+	rayMaxSteps(20),
+	rayMinDist(0.01f),
+	rayMaxDist(200.0f),
+	starIterations(8),
+	starVolumetricSteps(8),
+	blackHoleRadius(0.2f),
+
+	fgShader(_fgShader),
+	drawFg(true),
 
 	score(0),
 	level(1),
@@ -27,6 +38,7 @@ GUI::GUI(GLFWwindow* window)
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
+	this->updateBg();
 }
 
 GUI::~GUI() {
@@ -46,6 +58,24 @@ void GUI::render() {
 	ImGui::Begin("Configuration", nullptr, configurationWindowFlags);
 	if (ImGui::CollapsingHeader("Background settings")) {
 		ImGui::Checkbox("Draw background", &this->drawBg);
+		if (ImGui::SliderInt("Raymarching steps", &this->rayMaxSteps, 10, 200)) {
+			this->updateBg();
+		}
+		if (ImGui::SliderFloat("Raymarching min threshold", &this->rayMinDist, 0.0001f, 0.5f)) {
+			this->updateBg();
+		}
+		if (ImGui::SliderFloat("Raymarching max threshold", &this->rayMaxDist, 125.0f, 1000.0f)) {
+			this->updateBg();
+		}
+		if (ImGui::SliderInt("Star iterations", &this->starIterations, 1, 20)) {
+			this->updateBg();
+		}
+		if (ImGui::SliderInt("Star volumetrics", &this->starVolumetricSteps, 1, 20)) {
+			this->updateBg();
+		}
+		if (ImGui::SliderFloat("Distortion radius", &this->blackHoleRadius, 0.0f, 1.0f)) {
+			this->updateBg();
+		}
 	}
 	if (ImGui::CollapsingHeader("Foreground settings")) {
 		ImGui::Checkbox("Draw foreground", &this->drawFg);
@@ -61,6 +91,16 @@ void GUI::render() {
 	// Finish rendering
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void GUI::updateBg() const {
+	this->bgShader->activate();
+	glUniform1ui(this->bgShader->getUniformLocation("rayStepCount"), this->rayMaxSteps);
+	glUniform1f(this->bgShader->getUniformLocation("rayMinDist"), this->rayMinDist);
+	glUniform1f(this->bgShader->getUniformLocation("rayMaxDist"), this->rayMaxDist);
+	glUniform1ui(this->bgShader->getUniformLocation("starIterations"), this->starIterations);
+	glUniform1ui(this->bgShader->getUniformLocation("starVolumetricSteps"), this->starVolumetricSteps);
+	glUniform1f(this->bgShader->getUniformLocation("distortionRadiusPerc"), this->blackHoleRadius);
 }
 
 bool GUI::getDrawBg() const {

@@ -36,8 +36,6 @@ int main() {
 	const std::string windowName = "Asteroids";
 	Window window(windowName, 900, 900);
 	window.setWindowActive();
-	// Setup gui
-	GUI gui(window.getWindowPtr());
 	// Game camera
 	Camera camera(glm::vec2(-0.5f, -0.5f), static_cast<float>(window.getHeight()) / static_cast<float>(window.getWidth()));
 	// Create the shaders
@@ -50,6 +48,8 @@ int main() {
 	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_hermite.mesh", 15, true);
 	const HermiteMesh bulletMesh = MeshReader::loadHermiteMesh("bullet_hermite.mesh", 5, true);
 	const HermiteMesh asteroidMesh = MeshReader::loadHermiteMesh("asteroid_hermite.mesh", 10, true);
+	// Setup gui
+	GUI gui(window.getWindowPtr(), &bgShader, &fgShader);
 	// Create game objects
 	Player player(&playerMesh, &baseShader);
 	std::vector<Bullet> bulletVector;

@@ -10,10 +10,11 @@ uniform float timer;
 uniform vec2 cameraPos;
 
 // ----- STAR BACKGROUND -----
-#define ITERATIONS 12
+uniform uint starVolumetricSteps;
+uniform uint starIterations;
+
 #define FORMUPARAM 0.53
 
-#define VOLSTEPS 12
 #define STEPSIZE 0.1
 
 #define TILE 0.850
@@ -30,12 +31,12 @@ vec3 backgroundStars(vec3 from, vec3 dir) {
     float s = 0.1;
     float fade = 1.0;
 	vec3 v = vec3(0.0);
-	for (int r = 0; r < VOLSTEPS; ++r) {
+	for (uint r = 0u; r < starVolumetricSteps; ++r) {
 		vec3 p = from + s * dir * 0.5;
 		p = abs(tileVec - mod(p, tileVec2)); // tiling fold
         float pa;
         float a = pa = 0.0;
-        for (int i = 0; i < ITERATIONS; ++i) {
+        for (uint i = 0u; i < starIterations; ++i) {
             float lenP = length(p);
             a += abs(lenP - pa); // Sum of the change in length
             pa = lenP;
@@ -43,7 +44,7 @@ vec3 backgroundStars(vec3 from, vec3 dir) {
         }
 		float dm = max(0.0, DARKMATTER - a * a * 0.001); //dark matter
 		a *= a * a; // add contrast
-		if (r > 6) {
+		if (r > 6u) {
             fade *= 1.0 - dm; // dark matter, don't render near
         }
 		v += fade;
@@ -57,10 +58,9 @@ vec3 backgroundStars(vec3 from, vec3 dir) {
 }
 
 // ----- RAYMARCHED PLANETS -----
-
-#define STEP_COUNT 30
-#define MIN_DST .01
-#define MAX_DST 250.
+uniform uint rayStepCount;
+uniform float rayMinDist;
+uniform float rayMaxDist;
 
 float sphereDst(vec3 ray, vec3 pos, float size) {
     return length(ray - pos) - size;
@@ -84,11 +84,11 @@ float scene(vec3 ray) {
 
 float rayMarch(vec3 rayOrigin, vec3 rayDir) {
     float dO = 0.;
-    for(int i = 0; i < STEP_COUNT; ++i) {
+    for(uint i = 0u; i < rayStepCount; ++i) {
     	vec3 p = rayOrigin + rayDir * dO;
         float dS = scene(p);
         dO += dS;
-        if(dO > MAX_DST || abs(dS) < MIN_DST) break;
+        if(dO > rayMaxDist || abs(dS) < rayMinDist) break;
     }
     return dO;
 }
@@ -105,7 +105,7 @@ vec3 calculateNormal(vec3 p) {
 
 // ----- MAIN -----
 
-#define DISTORTION_RADIUS_PERC 0.2
+uniform float distortionRadiusPerc;
 
 void main() {
     vec2 trueUv = uv * 2. - 1.;
@@ -114,7 +114,7 @@ void main() {
     vec3 col = vec3(0.0);
 
     float dstFromCenter = length(worldPos);
-    float distortionRadius = worldSize * DISTORTION_RADIUS_PERC;
+    float distortionRadius = worldSize * distortionRadiusPerc;
     float dstFactor = smoothstep(distortionRadius, -distortionRadius, dstFromCenter - worldSize);
     // Add black hole distortion at the edge of the map
     if (dstFromCenter >= worldSize - distortionRadius) {
@@ -128,7 +128,7 @@ void main() {
 
     // Raymarch
     float d = rayMarch(ro, rd);
-    if (d < MAX_DST) {
+    if (d < rayMaxDist) {
         // Add the planets if the ray hit them
         vec3 p = ro + rd * d;
         vec3 n = calculateNormal(p);

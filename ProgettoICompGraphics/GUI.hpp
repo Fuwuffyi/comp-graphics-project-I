@@ -6,20 +6,36 @@
 
 #include <cstdint>
 
+class Shader;
+
 class GUI {
 private:
+	// BG Settings
+	const Shader* bgShader;
 	bool drawBg;
+	int32_t rayMaxSteps;
+	float rayMinDist;
+	float rayMaxDist;
+	int32_t starIterations;
+	int32_t starVolumetricSteps;
+	float blackHoleRadius;
+
+	// FG Settings
+	const Shader* fgShader;
 	bool drawFg;
 
+	// Player UI
 	uint32_t score;
 	uint16_t level;
 	uint16_t asteroidsRemaining;
 public:
-	GUI(GLFWwindow* window);
+	GUI(GLFWwindow* window, const Shader* _bgShader, const Shader* _fgShader);
 	~GUI();
 
 	void newFrame() const;
 	void render();
+
+	void updateBg() const;
 
 	// Config
 	bool getDrawBg() const;
