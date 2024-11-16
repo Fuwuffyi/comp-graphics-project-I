@@ -67,31 +67,18 @@ float sphereDst(vec3 ray, vec3 pos, float size) {
 }
 
 float scene(vec3 ray) {
-    // Create a sun
     vec3 sunPos = vec3(0, 0, 100.);
     float sun = sphereDst(ray, sunPos, 15.);
-    
-    // Create a first planet to orbit the sun
-    float planet1Speed = 0.6;
-    float planet1Phase = 0.0;
-    float planet1RotDist = 45.;
-    vec3 planet1Pos = sunPos + planet1RotDist * vec3(
-        cos((timer + planet1Phase) * planet1Speed), 
-        sin((timer + planet1Phase) * planet1Speed), 
-    0.0);
+    vec3 planet1Pos = sunPos + vec3(
+        cos(timer * 0.6),
+        sin(timer * 0.6),
+        0.0) * 45.0;
     float planet1 = sphereDst(ray, planet1Pos, 5.);
-    
-    // Create a second planet to orbit the sun
-    float planet2Speed = 1.;
-    float planet2Phase = 0.4;
-    float planet2RotDist = 75.;
-    vec3 planet2Pos = sunPos + planet2RotDist * vec3(
-        cos((timer + planet2Phase) * planet2Speed), 
-        sin((timer + planet2Phase) * planet2Speed), 
-    0.0);
+    vec3 planet2Pos = sunPos + vec3(
+        cos(timer * 1.0 + 0.4),
+        sin(timer * 1.0 + 0.4),
+        0.0) * 75.0;
     float planet2 = sphereDst(ray, planet2Pos, 4.);
-    
-    // Return the entire scene
     return min(sun, min(planet1, planet2));
 }
 
@@ -122,16 +109,15 @@ vec3 calculateNormal(vec3 p) {
 
 void main() {
     vec2 trueUv = uv * 2. - 1.;
-    // Initialization
-    vec3 ro = vec3(cameraPos, 0.) * 10.0; // Camera position
+    vec3 ro = vec3(cameraPos, 0.) * 10.0;
     vec3 rd = normalize(vec3(trueUv, 1.0));
     vec3 col = vec3(0.0);
 
-    // Black hole distortion
     float dstFromCenter = length(worldPos);
-    float distorsionRadius = worldSize * DISTORTION_RADIUS_PERC;
-    if (dstFromCenter >= worldSize - distorsionRadius) {
-        float dstFactor = smoothstep(distorsionRadius, -distorsionRadius, dstFromCenter - worldSize);
+    float distortionRadius = worldSize * DISTORTION_RADIUS_PERC;
+    float dstFactor = smoothstep(distortionRadius, -distortionRadius, dstFromCenter - worldSize);
+    // Add black hole distortion at the edge of the map
+    if (dstFromCenter >= worldSize - distortionRadius) {
         if (dstFromCenter > worldSize) {
             rd *= 1 - dstFactor;
             ro = -ro;
@@ -139,17 +125,19 @@ void main() {
             rd *= dstFactor;
         }
     }
-    
+
     // Raymarch
     float d = rayMarch(ro, rd);
-    if(d < MAX_DST) {
+    if (d < MAX_DST) {
+        // Add the planets if the ray hit them
         vec3 p = ro + rd * d;
         vec3 n = calculateNormal(p);
         float dif = dot(n, normalize(vec3(0, .2, -1))) * .5 + .5;
         col = vec3(dif);
         col.rgb = pow(col.rgb, vec3(.4545));
     } else {
-        col = vec3(backgroundStars((ro / 100.) + vec3(1., .5 , 0.5), rd));
+        // Add the stars to everything else
+        col = vec3(backgroundStars((ro / 100.) + vec3(1., .5, 0.5), rd));
     }
     fragColor = vec4(col, 1.0);
 }
