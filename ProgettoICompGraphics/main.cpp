@@ -77,11 +77,11 @@ int main() {
 		// ----- Get new GUI frame -----
 		gui.newFrame();
 		// ----- Player Update stuff -----
-		player.update(deltaTime);
-		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
-			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
-		}
 		if (player.isAlive()) {
+			player.update(deltaTime);
+			if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
+				bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
+			}
 			for (const Asteroid& asteroid : asteroidVector) {
 				if (asteroid.getBoundingBox().checkCollisions(player.getBoundingBox())) {
 					player.setDead(true);
