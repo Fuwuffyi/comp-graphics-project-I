@@ -195,6 +195,7 @@
     <ClInclude Include="GUI.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="asteroidFragShader.glsl" />
     <None Include="asteroidVertShader.glsl" />
     <None Include="asteroid_hermite.mesh" />
     <None Include="bgFragShader.glsl" />

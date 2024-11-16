@@ -44,12 +44,12 @@ int main() {
 	const Shader bgShader("bgFragShader.glsl", "bgVertShader.glsl");
 	const Shader fgShader("fgFragShader.glsl", "fgVertShader.glsl");
 	const Shader baseShader("baseFragShader.glsl", "baseVertShader.glsl");
-	const Shader asteroidShader("baseFragShader.glsl", "asteroidVertShader.glsl");
+	const Shader asteroidShader("asteroidFragShader.glsl", "asteroidVertShader.glsl");
 	// Load meshes
 	const Mesh windowMesh = MeshReader::loadBasicMesh("window_mesh.mesh", GL_TRIANGLES); // Used for BG and FG
 	const HermiteMesh playerMesh = MeshReader::loadHermiteMesh("player_hermite.mesh", 15, true);
 	const HermiteMesh bulletMesh = MeshReader::loadHermiteMesh("bullet_hermite.mesh", 5, true);
-	const HermiteMesh asteroidMesh = MeshReader::loadHermiteMesh("asteroid_hermite.mesh", 20, true);
+	const HermiteMesh asteroidMesh = MeshReader::loadHermiteMesh("asteroid_hermite.mesh", 10, true);
 	// Create game objects
 	Player player(&playerMesh, &baseShader);
 	std::vector<Bullet> bulletVector;

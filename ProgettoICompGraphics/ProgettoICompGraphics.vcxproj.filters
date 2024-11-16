@@ -247,5 +247,8 @@
     <None Include="fgVertShader.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="asteroidFragShader.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
