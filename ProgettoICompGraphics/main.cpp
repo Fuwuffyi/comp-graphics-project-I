@@ -81,6 +81,13 @@ int main() {
 		if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
 			bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
 		}
+		if (player.isAlive()) {
+			for (const Asteroid& asteroid : asteroidVector) {
+				if (asteroid.getBoundingBox().checkCollisions(player.getBoundingBox())) {
+					player.setDead(true);
+				}
+			}
+		}
 		// ----- Bullet Update stuff -----
 		for (uint32_t i = static_cast<uint32_t>(bulletVector.size()); i > 0; --i) {
 			Bullet& bullet = bulletVector[i - 1];
