@@ -146,6 +146,7 @@
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="HermiteMesh.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshReader.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="HermiteMesh.hpp" />
     <ClInclude Include="Keyboard.hpp" />
+    <ClInclude Include="LevelManager.hpp" />
     <ClInclude Include="Mesh.hpp" />
     <ClInclude Include="MeshReader.hpp" />
     <ClInclude Include="Mouse.hpp" />

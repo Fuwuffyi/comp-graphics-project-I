@@ -10,6 +10,8 @@ public:
 	Asteroid(const Mesh* _mesh, const Shader* _shader, const glm::vec2& startPos, const glm::vec2& startScale);
 	Asteroid(const Mesh* _mesh, const Shader* _shader, const glm::vec2& startScale);
 
+	void randomizePosition();
+
 	void update(const float deltaTime) override;
 	void draw(const Camera& cam) const override;
 };

@@ -11,6 +11,7 @@
 #include "Bullet.hpp"
 #include "GameSettings.hpp"
 #include "GUI.hpp"
+#include "LevelManager.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -52,10 +53,7 @@ int main() {
 	// Create game objects
 	Player player(&playerMesh, &baseShader);
 	std::vector<Bullet> bulletVector;
-	std::vector<Asteroid> asteroidVector;
-	for (uint32_t i = 0; i < 2; ++i) {
-		asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, glm::vec2(GameSettings::ASTEROID_MAX_SCALE));
-	}
+	std::vector<Asteroid> asteroidVector = LevelManager::generateLevel(&asteroidMesh, &asteroidShader, player, gui.getLevel());
 	gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 	// Set static uniforms
 	bgShader.activate();
@@ -117,6 +115,10 @@ int main() {
 					break;
 				}
 			}
+		}
+		if (gui.getAsteroidsRemaining() == 0) {
+			gui.setLevel(gui.getLevel() + 1);
+			asteroidVector = LevelManager::generateLevel(&asteroidMesh, &asteroidShader, player, gui.getLevel());
 		}
 		// Update camera
 		camera.setPosition(player.getPosition());

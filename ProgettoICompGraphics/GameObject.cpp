@@ -103,6 +103,7 @@ void GameObject::changeScale(const glm::vec2& offset) {
 	this->updateScaleMatrix();
 	this->updateObjectMatrix();
 }
+
 BoundingBox GameObject::getBoundingBox() const {
 	return this->mesh->getBoundingBox().transform(this->matObj);
 }
