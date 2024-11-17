@@ -34,7 +34,7 @@ namespace LevelManager {
 	 * \param asteroidShader The shader for the generated asteroid.
 	 * \param player The player's pointer, used to not generate asteroids where the player is.
 	 * \param level The current level to generate asteroids from.
-	 * \return A vector containing level + 3 asteroids.
+	 * \return A vector containing level + 2 asteroids.
 	 */
 	std::vector<Asteroid> generateLevel(const Mesh* asteroidMesh, const Shader* asteroidShader, const Player& player, const uint16_t level);
 };

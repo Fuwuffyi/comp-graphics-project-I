@@ -53,6 +53,7 @@ int main() {
 	// Create game objects
 	Player player(&playerMesh, &baseShader);
 	std::vector<Bullet> bulletVector;
+	// Generate the level
 	std::vector<Asteroid> asteroidVector = LevelManager::generateLevel(&asteroidMesh, &asteroidShader, player, gui.getLevel());
 	gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 	// Set static uniforms
@@ -77,9 +78,11 @@ int main() {
 		// ----- Player Update stuff -----
 		if (player.isAlive()) {
 			player.update(deltaTime);
+			// Shoot bullets
 			if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
 				bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
 			}
+			// Check for asteroid collisions
 			for (const Asteroid& asteroid : asteroidVector) {
 				if (asteroid.getBoundingBox().checkCollisions(player.getBoundingBox())) {
 					player.setDead(true);
@@ -90,6 +93,7 @@ int main() {
 		for (uint32_t i = static_cast<uint32_t>(bulletVector.size()); i > 0; --i) {
 			Bullet& bullet = bulletVector[i - 1];
 			bullet.update(deltaTime);
+			// Check despawn timer for deletion
 			if (bullet.getShouldDelete()) {
 				bulletVector.erase(bulletVector.begin() + (i - 1));
 			}
@@ -98,14 +102,17 @@ int main() {
 		for (uint32_t i = static_cast<uint32_t>(asteroidVector.size()); i > 0; --i) {
 			Asteroid& asteroid = asteroidVector[i - 1];
 			asteroid.update(deltaTime);
+			// Check asteroid with all other bullets
 			for (uint32_t j = static_cast<uint32_t>(bulletVector.size()); j > 0; --j) {
 				const Bullet& bullet = bulletVector[j - 1];
+				// If collides spawn two other asteroids, and despawn asteroid and bullet
 				if (asteroid.getBoundingBox().checkCollisions(bullet.getBoundingBox())) {
 					const float origScale = asteroid.getScale().x;
 					const glm::vec2 newScale = glm::vec2(origScale) * 0.5f;
 					const glm::vec2 newPos = asteroid.getPosition();
 					bulletVector.erase(bulletVector.begin() + (j - 1));
 					asteroidVector.erase(asteroidVector.begin() + (i - 1));
+					// Generate asteroids only if the size is above a threshold
 					if (newScale.x > GameSettings::ASTEROID_MIN_SCALE) {
 						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, newPos, newScale);
 						asteroidVector.emplace_back(&asteroidMesh, &asteroidShader, newPos, newScale);
@@ -116,6 +123,7 @@ int main() {
 				}
 			}
 		}
+		// Create new level if current level is beaten
 		if (gui.getAsteroidsRemaining() == 0) {
 			gui.setLevel(gui.getLevel() + 1);
 			asteroidVector = LevelManager::generateLevel(&asteroidMesh, &asteroidShader, player, gui.getLevel());

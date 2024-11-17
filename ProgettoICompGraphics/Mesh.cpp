@@ -15,6 +15,7 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& ind
 	this->vao.bind();
 	this->vbo.bind();
 	this->ebo.bind();
+	// Link the vertice's attributes to slots: (0 = position, 1 = color)
 	this->vao.linkAttrib(0, 2, GL_FLOAT, 0);
 	this->vao.linkAttrib(1, 4, GL_FLOAT, 2 * sizeof(float));
 	this->vao.unbind();

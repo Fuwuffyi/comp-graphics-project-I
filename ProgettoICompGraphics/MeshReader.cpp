@@ -21,12 +21,14 @@ namespace MeshReader{
             std::istringstream ss(line);
             char type;
             ss >> type;
+            // If the line starts with "v" it is a vertex declaration
             if (type == 'v') {
                 Vertex vertex;
                 ss >> vertex.position.x >> vertex.position.y >> 
                     vertex.color.r >> vertex.color.g >> vertex.color.b >> vertex.color.a;
                 vertices.push_back(vertex);
             }
+            // If the line starts with "i" it is a index declaration
             else if (type == 'i') {
                 uint32_t index;
                 ss >> index;
