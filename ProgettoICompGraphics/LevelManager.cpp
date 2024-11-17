@@ -12,7 +12,8 @@ std::vector<Asteroid> LevelManager::generateLevel(const Mesh* asteroidMesh, cons
 	std::vector<Asteroid> asteroids;
 	for (uint32_t i = 0; i < asteroidCount; ++i) {
 		asteroids.emplace_back(asteroidMesh, asteroidShader, glm::vec2(GameSettings::ASTEROID_MAX_SCALE));
-		while (asteroids[i].getBoundingBox().checkCollisions(player.getBoundingBox())) {
+		// If the asteroid is too close, regenerate it
+		while (glm::length(asteroids[i].getPosition() - player.getPosition()) < GameSettings::ASTEROID_MAX_SCALE * GameSettings::WORLD_SIZE * 1.1f) {
 			asteroids[i].randomizePosition();
 		}
 	}
