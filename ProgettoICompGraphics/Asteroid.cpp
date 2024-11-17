@@ -12,14 +12,14 @@
 static std::random_device randomDevice;
 static std::mt19937 randomEngine(randomDevice());
 static std::uniform_real_distribution<float> startRotDist(0.0f, 360.0f);
-static std::uniform_real_distribution<float> startAccel(-0.6f, 0.6f);
+static std::uniform_real_distribution<float> startAccel(-GameSettings::ASTEROID_MAX_SPEED, GameSettings::ASTEROID_MAX_SPEED);
 static std::uniform_real_distribution<float> rotAccel(-25.0f, 25.0f);
 static std::uniform_real_distribution<float> spawnDistribution(-GameSettings::WORLD_SIZE * 0.7f, GameSettings::WORLD_SIZE * 0.7f);
 static std::uniform_int_distribution<uint32_t> randomIdDistribution(0, std::numeric_limits<uint32_t>::max());
 
 Asteroid::Asteroid(const Mesh* _mesh, const Shader* _shader, const glm::vec2& startPos, const glm::vec2& startScale)
 :
-	PhysicsGameObject(_mesh, _shader, startPos, startRotDist(randomEngine), startScale, 50.0f, glm::vec2(startAccel(randomEngine), startAccel(randomEngine)), rotAccel(randomEngine), 2.0f, 15.0f, 1.0f, 1.0f),
+	PhysicsGameObject(_mesh, _shader, startPos, startRotDist(randomEngine), startScale, 50.0f, glm::vec2(startAccel(randomEngine), startAccel(randomEngine)), rotAccel(randomEngine), GameSettings::ASTEROID_MAX_SPEED, 15.0f, 1.0f, 1.0f),
 	uuid(randomIdDistribution(randomEngine))
 {}
 

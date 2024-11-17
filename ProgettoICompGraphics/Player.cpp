@@ -5,7 +5,7 @@
 
 Player::Player(const Mesh* _mesh, const Shader* _shader) 
 :
-	PhysicsGameObject(_mesh, _shader, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f), 15.0f, glm::vec2(0.0f), 0.0f, 1.0f, 180.0f, 0.9f, 0.02f),
+	PhysicsGameObject(_mesh, _shader, glm::vec2(0.0f), 0.0f, glm::vec2(0.05f), 15.0f, glm::vec2(0.0f), 0.0f, GameSettings::PLAYER_MAX_SPEED, GameSettings::PLAYER_MAX_ROT_SPEED, GameSettings::PLAYER_FRIC, GameSettings::PLAYER_ROT_FRIC),
 	dead(false)
 {}
 

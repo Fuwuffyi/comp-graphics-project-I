@@ -3,7 +3,7 @@
 
 Bullet::Bullet(const Mesh* _mesh, const Shader* _shader, const glm::vec2& _position, const float& _rotation, const glm::vec2& startingVelocity)
 :
-	PhysicsGameObject(_mesh, _shader, _position, _rotation, glm::vec2(0.0075f), 1.0f, startingVelocity, 0.0f, 2.0f, 0.0f, 1.0f, 0.0f),
+	PhysicsGameObject(_mesh, _shader, _position, _rotation, glm::vec2(0.0075f), 1.0f, startingVelocity, 0.0f, GameSettings::BULLET_MAX_SPEED, 0.0f, 1.0f, 0.0f),
 	shouldDelete(false),
 	timer(0.0f)
 {}

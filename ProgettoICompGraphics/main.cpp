@@ -80,7 +80,7 @@ int main() {
 			player.update(deltaTime);
 			// Shoot bullets
 			if (Keyboard::keyWentDown(GLFW_KEY_SPACE)) {
-				bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * 2.0f);
+				bulletVector.emplace_back(&bulletMesh, &baseShader, player.getPosition(), player.getRotation(), player.getHeadingVec() * GameSettings::BULLET_MAX_SPEED);
 			}
 			// Check for asteroid collisions
 			for (const Asteroid& asteroid : asteroidVector) {
