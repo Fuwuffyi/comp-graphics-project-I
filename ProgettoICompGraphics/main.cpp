@@ -30,8 +30,6 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	// Add double buffering
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
-	// Eanable multisampling (MSAA 2x)
-	glfwWindowHint(GLFW_SAMPLES, 2);
 	// Create the window
 	const std::string windowName = "Asteroids";
 	Window window(windowName, 900, 900);
