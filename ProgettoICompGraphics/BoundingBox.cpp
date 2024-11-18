@@ -1,5 +1,7 @@
 #include "BoundingBox.hpp"
 
+#include "Vertex.hpp"
+
 #include <cmath>
 #include <limits>
 

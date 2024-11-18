@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mesh.hpp"
+#include "Vertex.hpp"
 
 /**
  * Struct containing control points for a hermite curve.

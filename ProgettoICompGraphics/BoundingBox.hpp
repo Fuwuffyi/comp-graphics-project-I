@@ -1,9 +1,13 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include <array>
 #include <vector>
 
-#include "Vertex.hpp"
+/**
+ * Forward declaration of the Vertex struct.
+ */
+struct Vertex;
 
 /**
  * Class containing the bounding box of a given object.

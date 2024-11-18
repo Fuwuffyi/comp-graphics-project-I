@@ -3,9 +3,6 @@
 #include "Keyboard.hpp"
 #include "Mouse.hpp"
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 void Window::framebufferSizeCallback(GLFWwindow* window, const int32_t newWidth, const int32_t newHeight) {
 	// Set window's object data on resize
 	Window* windowObj = static_cast<Window*>(glfwGetWindowUserPointer(window));
