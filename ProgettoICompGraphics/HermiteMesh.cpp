@@ -1,5 +1,4 @@
 #include "HermiteMesh.hpp"
-#include "Vertex.hpp"
 
 #include <glad/glad.h>
 
