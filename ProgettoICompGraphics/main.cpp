@@ -1,5 +1,4 @@
 #include "Shader.hpp"
-#include "Mesh.hpp"
 #include "HermiteMesh.hpp"
 #include "Window.hpp"
 #include "Camera.hpp"
@@ -52,7 +51,7 @@ int main() {
 	Player player(&playerMesh, &baseShader);
 	std::vector<Bullet> bulletVector;
 	// Generate the level
-	std::vector<Asteroid> asteroidVector = LevelManager::generateLevel(&asteroidMesh, &asteroidShader, player, gui.getLevel());
+	std::vector<Asteroid> asteroidVector = LevelManager::generateLevel(&asteroidMesh, &asteroidShader, player.getPosition(), gui.getLevel());
 	gui.setAsteroidsRemaining(static_cast<uint16_t>(asteroidVector.size()));
 	// Set static uniforms
 	bgShader.activate();
@@ -124,7 +123,7 @@ int main() {
 		// Create new level if current level is beaten
 		if (gui.getAsteroidsRemaining() == 0) {
 			gui.setLevel(gui.getLevel() + 1);
-			asteroidVector = LevelManager::generateLevel(&asteroidMesh, &asteroidShader, player, gui.getLevel());
+			asteroidVector = LevelManager::generateLevel(&asteroidMesh, &asteroidShader, player.getPosition(), gui.getLevel());
 		}
 		// Update camera
 		camera.setPosition(player.getPosition());

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <glm/glm.hpp>
 
 /**
  * Forward declaration for the Mesh class.
@@ -12,11 +13,6 @@ class Mesh;
  * Forward declaration for the Shader class.
  */
 class Shader;
-
-/**
- * Forward declaration for the Player class.
- */
-class Player;
 
 /**
  * Forward declaration for the Asteroid class.
@@ -32,9 +28,9 @@ namespace LevelManager {
 	 *
 	 * \param asteroidMesh The mesh for the generated asteroid.
 	 * \param asteroidShader The shader for the generated asteroid.
-	 * \param player The player's pointer, used to not generate asteroids where the player is.
+	 * \param safePosition The player's position, to not generate asteroids there.
 	 * \param level The current level to generate asteroids from.
 	 * \return A vector containing level + 2 asteroids.
 	 */
-	std::vector<Asteroid> generateLevel(const Mesh* asteroidMesh, const Shader* asteroidShader, const Player& player, const uint16_t level);
+	std::vector<Asteroid> generateLevel(const Mesh* asteroidMesh, const Shader* asteroidShader, const glm::vec2& safePosition, const uint16_t level);
 };
