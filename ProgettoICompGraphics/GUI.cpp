@@ -104,6 +104,9 @@ void GUI::render() {
 	ImGui::Text("Score: %.8u", this->score);
 	ImGui::Text("Level: %.2u", this->level);
 	ImGui::Text("Asteroids Left: %.2u", this->asteroidsRemaining);
+	ImGui::Spacing();
+	ImGui::Text("Movement: <W, A, S, D> or <Arrow Keys>");
+	ImGui::Text("Shoot: <SPACE>");
 	ImGui::End();
 	// Finish rendering
 	ImGui::Render();

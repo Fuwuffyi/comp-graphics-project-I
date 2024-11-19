@@ -19,16 +19,16 @@ void Player::setDead(const bool _dead) {
 
 void Player::update(const float deltaTime) {
 	if (!this->dead) {
-		if (Keyboard::key(GLFW_KEY_A)) {
+		if (Keyboard::key(GLFW_KEY_A) || Keyboard::key(GLFW_KEY_LEFT)) {
 			this->applyRotationalForce(45000.0f * deltaTime);
 		}
-		if (Keyboard::key(GLFW_KEY_D)) {
+		if (Keyboard::key(GLFW_KEY_D) || Keyboard::key(GLFW_KEY_RIGHT)) {
 			this->applyRotationalForce(-45000.0f * deltaTime);
 		}
-		if (Keyboard::key(GLFW_KEY_W)) {
+		if (Keyboard::key(GLFW_KEY_W) || Keyboard::key(GLFW_KEY_UP)) {
 			this->applyForce(this->getHeadingVec() * 1000.0f * deltaTime);
 		}
-		if (Keyboard::key(GLFW_KEY_S)) {
+		if (Keyboard::key(GLFW_KEY_S) || Keyboard::key(GLFW_KEY_DOWN)) {
 			this->applyForce(this->getHeadingVec() * -1000.0f * deltaTime);
 		}
 		this->tickPhysics(deltaTime);
